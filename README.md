@@ -1,13 +1,13 @@
 # catalogware
 
-Technologies used:
+###Technologies used:
 ---
  *  Spring Boot
  *  AngularJS (1.x)
  *  Twitter Bootstrap v4
  *  Spring Social
 
-To be implemented:
+###To be implemented:
 ---
  - Authentication
  - Shopping Cart (checkout, add item, clear cart)
@@ -18,7 +18,7 @@ To be implemented:
  - Heroku deployment
  - Something else...?
  
-Collaborating:
+###Collaborating:
 ---
  - Kristijan Cvetkovikj, as Full-Stack Developer
  - Borche Petrovski, as Full-Stack Developer
