@@ -1,6 +1,11 @@
 group 'com.wp.finki.ukim.mk.catalogware'
 version '0.1'
 
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
 buildscript {
 	ext {
 		springBootVersion = '1.4.0.RELEASE'
@@ -13,15 +18,11 @@ buildscript {
 	}
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
-
 jar {
 	baseName = 'catalogware'
 	version = '0.0.1-SNAPSHOT'
 }
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -31,14 +32,11 @@ repositories {
 
 
 dependencies {
-	compile "org.springframework.boot:spring-boot-starter-web:1.1.10.RELEASE"
-	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-	compile 'org.springframework.boot:spring-boot-starter-test'
-	compile group: 'org.hibernate', name: 'hibernate-java8', version: '5.2.1.Final'
-	compile 'org.postgresql:postgresql:9.4-1206-jdbc42'
+	compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+	compile "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+	compile "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+	compile 'mysql:mysql-connector-java:5.1.13'
 	compile 'com.h2database:h2'
-
-	testCompile group: 'junit', name: 'junit', version: '4.12'
-	testCompile 'org.mockito:mockito-core:1.10.19'
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 
