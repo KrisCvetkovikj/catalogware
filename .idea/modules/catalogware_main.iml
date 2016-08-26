@@ -18,6 +18,7 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-data-jpa:1.4.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-security:1.4.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: mysql:mysql-connector-java:5.1.13" level="project" />
+    <orderEntry type="library" name="Gradle: io.jsonwebtoken:jjwt:0.6.0" level="project" />
     <orderEntry type="library" name="Gradle: com.h2database:h2:1.4.192" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter:1.4.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-tomcat:1.4.0.RELEASE" level="project" />
