@@ -1,7 +1,11 @@
 package com.wp.finki.ukim.mk.catalogware.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Borce on 26.08.2016.
@@ -17,29 +21,63 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
     private String name;
 
+    @Column(name = "email", unique = true)
+    private String email;
+
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "created_at")
+    private Date createdAt;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Basket basket;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Order> orders;
+
+//    @JsonIgnore
+//    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "likes")
+//    private List<Product> likes;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "admin")
+    private List<Product> products;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user")
+    private List<ProductLike> likes;
+
     public User() {
     }
 
-    public User(Long id, String username, String email, String password, Role role) {
+    public User(Long id, String name, String email, String password, Date createdAt, Role role,
+                Basket basket, List<Order> orders, List<Product> likes, List<Product> products) {
         this.id = id;
-        this.name = username;
+        this.name = name;
         this.email = email;
         this.password = password;
+        this.createdAt = createdAt;
         this.role = role;
+        this.basket = basket;
+        this.orders = orders;
+//        this.likes = likes;
+        this.products = products;
+    }
+
+    public User(Long id, String name, String email, String password, Date createdAt, Role role) {
+        this(id, name, email, password, createdAt, role, null, null, null, null);
     }
 
     public Long getId() {
@@ -74,11 +112,51 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public Role getRole() {
         return role;
     }
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Basket getBasket() {
+        return basket;
+    }
+
+    public void setBasket(Basket basket) {
+        this.basket = basket;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+//    public List<Product> getLikes() {
+//        return likes;
+//    }
+//
+//    public void setLikes(List<Product> likes) {
+//        this.likes = likes;
+//    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

@@ -1,15 +1,9 @@
 package com.wp.finki.ukim.mk.catalogware.web;
 
-import com.wp.finki.ukim.mk.catalogware.model.json.request.AuthenticateUserRequest;
-import com.wp.finki.ukim.mk.catalogware.model.json.response.AuthenticateUserResponse;
-import com.wp.finki.ukim.mk.catalogware.model.security.AuthUser;
+import com.wp.finki.ukim.mk.catalogware.model.request.AuthenticateUserRequest;
+import com.wp.finki.ukim.mk.catalogware.model.response.AuthenticateUserResponse;
 import com.wp.finki.ukim.mk.catalogware.service.AuthService;
-import com.wp.finki.ukim.mk.catalogware.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

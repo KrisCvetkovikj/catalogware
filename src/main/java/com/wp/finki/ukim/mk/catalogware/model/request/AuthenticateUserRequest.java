@@ -1,4 +1,4 @@
-package com.wp.finki.ukim.mk.catalogware.model.json.request;
+package com.wp.finki.ukim.mk.catalogware.model.request;
 
 import java.io.Serializable;
 

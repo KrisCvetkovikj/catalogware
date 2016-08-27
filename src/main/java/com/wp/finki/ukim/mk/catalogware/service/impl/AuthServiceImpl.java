@@ -1,7 +1,6 @@
 package com.wp.finki.ukim.mk.catalogware.service.impl;
 
-import com.wp.finki.ukim.mk.catalogware.model.json.request.AuthenticateUserRequest;
-import com.wp.finki.ukim.mk.catalogware.model.json.response.AuthenticateUserResponse;
+import com.wp.finki.ukim.mk.catalogware.model.request.AuthenticateUserRequest;
 import com.wp.finki.ukim.mk.catalogware.model.security.AuthUser;
 import com.wp.finki.ukim.mk.catalogware.service.AuthService;
 import com.wp.finki.ukim.mk.catalogware.service.UserService;

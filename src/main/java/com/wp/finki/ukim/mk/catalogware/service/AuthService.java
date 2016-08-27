@@ -1,6 +1,6 @@
 package com.wp.finki.ukim.mk.catalogware.service;
 
-import com.wp.finki.ukim.mk.catalogware.model.json.request.AuthenticateUserRequest;
+import com.wp.finki.ukim.mk.catalogware.model.request.AuthenticateUserRequest;
 
 /**
  * Created by Borce on 26.08.2016.
