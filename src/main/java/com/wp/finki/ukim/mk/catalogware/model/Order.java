@@ -12,12 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "orders")
-public class Order implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class Order extends BaseModel implements Serializable {
 
     @Column(name = "created_at")
     private Date createdAt;
@@ -46,9 +41,9 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(Long id, Date createdAt, Date updatedAt, String shippingAddress, boolean finished,
+    public Order(long id, Date createdAt, Date updatedAt, String shippingAddress, boolean finished,
                  User user, List<Product> products) {
-        this.id = id;
+        super(id);
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.shippingAddress = shippingAddress;
@@ -57,16 +52,12 @@ public class Order implements Serializable {
         this.products = products;
     }
 
-    public Order(Long id, Date createdAt, Date updatedAt, String shippingAddress, boolean finished) {
+    public Order(long id, Date createdAt, Date updatedAt, String shippingAddress, boolean finished) {
         this(id, createdAt, updatedAt, shippingAddress, finished, null, null);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public Order(Date createdAt, Date updatedAt, String shippingAddress, boolean finished) {
+        this(0, createdAt, updatedAt, shippingAddress, finished);
     }
 
     public Date getCreatedAt() {

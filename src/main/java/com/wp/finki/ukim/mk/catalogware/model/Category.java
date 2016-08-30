@@ -11,12 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "categories")
-public class Category implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class Category extends BaseModel implements Serializable {
 
     @Column(name = "name", unique = true)
     private String name;
@@ -28,18 +23,18 @@ public class Category implements Serializable {
     public Category() {
     }
 
-    public Category(Long id, String name, List<Product> products) {
-        this.id = id;
+    public Category(long id, String name, List<Product> products) {
+        super(id);
         this.name = name;
         this.products = products;
     }
 
-    public Long getId() {
-        return id;
+    public Category(long id, String name) {
+        this(id, name, null);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Category(String name) {
+        this(0, name);
     }
 
     public String getName() {

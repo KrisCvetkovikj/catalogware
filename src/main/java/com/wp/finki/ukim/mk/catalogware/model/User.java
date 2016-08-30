@@ -12,17 +12,12 @@ import java.util.List;
  */
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class User extends BaseModel implements Serializable {
 
     public enum Role {
         ADMIN,
         CUSTOMER
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -47,10 +42,6 @@ public class User implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Order> orders;
 
-//    @JsonIgnore
-//    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "likes")
-//    private List<Product> likes;
-
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "admin")
     private List<Product> products;
@@ -62,9 +53,9 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Long id, String name, String email, String password, Date createdAt, Role role,
-                Basket basket, List<Order> orders, List<Product> likes, List<Product> products) {
-        this.id = id;
+    public User(long id, String name, String email, String password, Date createdAt, Role role,
+                Basket basket, List<Order> orders, List<ProductLike> likes, List<Product> products) {
+        super(id);
         this.name = name;
         this.email = email;
         this.password = password;
@@ -72,20 +63,16 @@ public class User implements Serializable {
         this.role = role;
         this.basket = basket;
         this.orders = orders;
-//        this.likes = likes;
+        this.likes = likes;
         this.products = products;
     }
 
-    public User(Long id, String name, String email, String password, Date createdAt, Role role) {
+    public User(long id, String name, String email, String password, Date createdAt, Role role) {
         this(id, name, email, password, createdAt, role, null, null, null, null);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public User(String name, String email, String password, Date createdAt, Role role) {
+        this(0, name, email, password, createdAt, role);
     }
 
     public String getName() {
@@ -144,13 +131,13 @@ public class User implements Serializable {
         this.orders = orders;
     }
 
-//    public List<Product> getLikes() {
-//        return likes;
-//    }
-//
-//    public void setLikes(List<Product> likes) {
-//        this.likes = likes;
-//    }
+    public List<ProductLike> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<ProductLike> likes) {
+        this.likes = likes;
+    }
 
     public List<Product> getProducts() {
         return products;

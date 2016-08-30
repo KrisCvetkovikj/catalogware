@@ -13,12 +13,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "products")
-public class Product implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class Product extends BaseModel implements Serializable {
 
     @Column(name = "name")
     private String name;
@@ -58,13 +53,6 @@ public class Product implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "products")
     private List<Order> orders;
 
-//    @JsonIgnore
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "products_likes",
-//            joinColumns = @JoinColumn(name = "product_id"),
-//            inverseJoinColumns = @JoinColumn(name = "user_id"))
-//    private List<User> likes;
-
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.product")
     private List<ProductLike> likes;
@@ -72,10 +60,10 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(Long id, String name, String description, double price, Blob image, Date createdAt,
+    public Product(long id, String name, String description, double price, Blob image, Date createdAt,
                    Date updatedAt, User admin, List<Category> categories, List<Basket> baskets,
-                   List<Order> orders, List<User> likes) {
-        this.id = id;
+                   List<Order> orders, List<ProductLike> likes) {
+        super(id);
         this.name = name;
         this.description = description;
         this.price = price;
@@ -86,20 +74,16 @@ public class Product implements Serializable {
         this.categories = categories;
         this.baskets = baskets;
         this.orders = orders;
-//        this.likes = likes;
+        this.likes = likes;
     }
 
-    public Product(Long id, String name, String description, double price, Blob image,
+    public Product(long id, String name, String description, double price, Blob image,
                    Date createdAt, Date updatedAt) {
         this(id, name, description, price, image, createdAt, updatedAt, null, null, null, null, null);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public Product(String name, String description, double price, Blob image, Date createdAt, Date updatedAt) {
+        this(0, name, description, price, image, createdAt, updatedAt);
     }
 
     public String getName() {
@@ -182,11 +166,11 @@ public class Product implements Serializable {
         this.orders = orders;
     }
 
-//    public List<User> getLikes() {
-//        return likes;
-//    }
-//
-//    public void setLikes(List<User> likes) {
-//        this.likes = likes;
-//    }
+    public List<ProductLike> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<ProductLike> likes) {
+        this.likes = likes;
+    }
 }
