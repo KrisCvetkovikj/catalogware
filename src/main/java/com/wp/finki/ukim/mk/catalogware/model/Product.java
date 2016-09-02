@@ -1,5 +1,6 @@
 package com.wp.finki.ukim.mk.catalogware.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -30,9 +31,11 @@ public class Product extends BaseModel implements Serializable {
     @Column(name = "image", length = 10240)
     private byte[] image;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
 

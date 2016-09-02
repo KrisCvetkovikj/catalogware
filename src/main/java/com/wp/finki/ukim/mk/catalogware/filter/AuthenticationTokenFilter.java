@@ -1,6 +1,8 @@
 package com.wp.finki.ukim.mk.catalogware.filter;
 
 import com.wp.finki.ukim.mk.catalogware.utils.JwtUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,8 @@ import java.io.IOException;
  */
 public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFilter {
 
+    private final Logger logger = LoggerFactory.getLogger(AuthenticationTokenFilter.class);
+
     @Value("${jwt.token.header}")
     private String tokenHeader;
 
@@ -34,18 +38,25 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+        logger.info("checking request for web token");
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String token = httpServletRequest.getHeader(tokenHeader);
         if (token != null) {
-            token = token.split(" ")[1];
-            String username = jwtUtils.getUsernameFromToken(token);
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                if (jwtUtils.validateToken(token, userDetails)) {
-                    UsernamePasswordAuthenticationToken authentication = new
-                            UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+            String[] parts = token.split(" ");
+            if (parts.length > 1) {
+                logger.info("trying to validate jwt token");
+                token = parts[1];
+                String username = jwtUtils.getUsernameFromToken(token);
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    if (jwtUtils.validateToken(token, userDetails)) {
+                        logger.info("jwt token valid");
+                        UsernamePasswordAuthenticationToken authentication = new
+                                UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        authentication.setDetails(new WebAuthenticationDetailsSource()
+                                .buildDetails(httpServletRequest));
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
                 }
             }
         }

@@ -1,8 +1,10 @@
 package com.wp.finki.ukim.mk.catalogware.web;
 
 import com.wp.finki.ukim.mk.catalogware.model.Product;
+import com.wp.finki.ukim.mk.catalogware.model.response.Response;
 import com.wp.finki.ukim.mk.catalogware.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,17 +30,21 @@ public class ProductController {
     }
 
     @PostMapping
-    public void store(@RequestBody Product product) {
-
+    @ResponseStatus(HttpStatus.CREATED)
+    public Response store(@RequestBody Product product) {
+        service.store(product);
+        return new Response(201, "Product created", "The product was created successfully");
     }
 
     @PutMapping(value = "/{id}")
-    public void update(@PathVariable long id, @RequestBody Product product) {
-        
+    public Response update(@PathVariable long id, @RequestBody Product product) {
+        service.update(id, product);
+        return new Response(200, "Product updated", "The product was updated successfully");
     }
 
     @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable long id) {
-
+        service.delete(id);
     }
 }

@@ -1,5 +1,6 @@
 package com.wp.finki.ukim.mk.catalogware.service.impl;
 
+import com.wp.finki.ukim.mk.catalogware.exception.ProductChangeFailedException;
 import com.wp.finki.ukim.mk.catalogware.model.Product;
 import com.wp.finki.ukim.mk.catalogware.model.User;
 import com.wp.finki.ukim.mk.catalogware.repository.ProductRepository;
@@ -61,9 +62,6 @@ public class ProductServiceImpl implements ProductService {
         if (product.getDescription() == null) {
             throw new IllegalArgumentException("product description can't be null");
         }
-        if (product.getImage() == null) {
-            throw new IllegalArgumentException("product image can;t be null");
-        }
         if (product.getAdmin() == null) {
             throw new IllegalArgumentException("product admin can;t be null");
         }
@@ -78,7 +76,12 @@ public class ProductServiceImpl implements ProductService {
         }
         product.setCreatedAt(new Date());
         product.setUpdatedAt(new Date());
-        return repository.save(product);
+        Product result = repository.save(product);
+        if (result == null) {
+            throw new ProductChangeFailedException("Storing the product failed",
+                    "Error occurred while saving the product");
+        }
+        return result;
     }
 
     @Override
@@ -95,7 +98,12 @@ public class ProductServiceImpl implements ProductService {
         }
         product.setId(id);
         product.setUpdatedAt(new Date());
-        return repository.save(product);
+        Product result = repository.save(product);
+        if (result == null) {
+            throw new ProductChangeFailedException("Updating the product failed",
+                    "Error occurred while updating the product");
+        }
+        return result;
     }
 
     @Override
@@ -105,6 +113,11 @@ public class ProductServiceImpl implements ProductService {
                     .format("can't delete product, product with id %d don't exists", id));
         }
         repository.delete(id);
-        return !this.exists(id);
+        boolean deleted = !this.exists(id);
+        if (!deleted) {
+            throw new ProductChangeFailedException("Deleting the product failed",
+                    "Error occurred while deleting the product");
+        }
+        return true;
     }
 }
