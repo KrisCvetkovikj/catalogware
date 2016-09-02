@@ -1,6 +1,7 @@
 package com.wp.finki.ukim.mk.catalogware.model;
 
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
@@ -10,11 +11,14 @@ import java.io.Serializable;
 @Embeddable
 public class ProductLikeId implements Serializable {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Product product;
+
+    public ProductLikeId() {
+    }
 
     public ProductLikeId(User user, Product product) {
         this.user = user;
@@ -35,5 +39,15 @@ public class ProductLikeId implements Serializable {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (! (obj instanceof ProductLikeId)) {
+            return false;
+        }
+        ProductLikeId id = (ProductLikeId) obj;
+        return this.user != null && this.user.equals(id.getUser()) &&
+                this.product != null && this.product.equals(id.getProduct());
     }
 }

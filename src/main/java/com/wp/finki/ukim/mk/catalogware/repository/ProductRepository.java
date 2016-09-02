@@ -8,11 +8,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 
 /**
- * Created by Borce on 30.08.2016.
+ * Created by Borce on 31.08.2016.
  */
-public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSpecificationExecutor<Category> {
+public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
-    Category findByName(String name);
-
-//    List<Product> findByProductsCategoriesId(long categoryId);
 }

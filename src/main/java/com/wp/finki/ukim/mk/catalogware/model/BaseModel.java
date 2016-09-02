@@ -11,7 +11,7 @@ public class BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    protected Long id;
 
     public BaseModel() {
     }
@@ -26,5 +26,11 @@ public class BaseModel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean equalFields(Object field1, Object field2) {
+        return field1 == null && field2 == null ||
+                !(field1 == null || field2 == null) &&
+                field1.equals(field2);
     }
 }

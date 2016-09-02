@@ -2,7 +2,6 @@ package com.wp.finki.ukim.mk.catalogware.repository;
 
 import com.wp.finki.ukim.mk.TestUtils;
 import com.wp.finki.ukim.mk.catalogware.CatalogwareApplication;
-import com.wp.finki.ukim.mk.catalogware.model.Category;
 import com.wp.finki.ukim.mk.catalogware.model.User;
 import org.junit.After;
 import org.junit.Before;
@@ -55,21 +54,8 @@ public class UserRepositoryTest {
 
     @After
     public void shutdown() {
-        TestUtils.truncateModelTable(context, User.class);
-    }
-
-    /**
-     * Assert that the actual user is same with the given user.
-     *
-     * @param actualUser actual user
-     * @param user       user to be asserted
-     */
-    private void assertUser(User actualUser, User user) {
-        assertEquals(actualUser.getName(), user.getName());
-        assertEquals(actualUser.getEmail(), user.getEmail());
-        assertEquals(actualUser.getPassword(), user.getPassword());
-        assertEquals(actualUser.getCreatedAt(), user.getCreatedAt());
-        assertEquals(actualUser.getRole(), user.getRole());
+        repository.deleteAll();
+        TestUtils.resetTableAutoincrement(context, User.class);
     }
 
     /**
@@ -82,13 +68,13 @@ public class UserRepositoryTest {
         int counter = 0;
         for (User user : users) {
             if (user.getId() == user1Id) {
-                this.assertUser(user1, user);
+                assertEquals(user1, user);
                 counter++;
             } else if (user.getId() == user2Id) {
-                this.assertUser(user2, user);
+                assertEquals(user2, user);
                 counter++;
             } else if (user.getId() == user3Id) {
-                this.assertUser(user3, user);
+                assertEquals(user3, user);
                 counter++;
             }
         }
@@ -101,8 +87,7 @@ public class UserRepositoryTest {
     @Test
     public void testFindOne() {
         User user = repository.findOne(user1Id);
-        assertNotNull(user);
-        this.assertUser(user1, user);
+        assertEquals(user1, user);
     }
 
     /**
@@ -111,6 +96,42 @@ public class UserRepositoryTest {
     @Test
     public void testFindOneOnUnExistingId() {
         User user = repository.findOne(unExistingUserId);
+        assertNull(user);
+    }
+
+    /**
+     * Test that findByName will return the user when the user name exists.
+     */
+    @Test
+    public void testFindByName() {
+        User user = repository.findByName(user2.getName());
+        assertEquals(user2, user);
+    }
+
+    /**
+     * Test that findByName will return null when the user name don't exists.
+     */
+    @Test
+    public void testFindByNameOnUnExistingName() {
+        User user = repository.findByName(unExistingUser.getName());
+        assertNull(user);
+    }
+
+    /**
+     * Test that findByEmail will return the user when the user email exists.
+     */
+    @Test
+    public void testFindByEmail() {
+        User user = repository.findByEmail(user3.getEmail());
+        assertEquals(user3, user);
+    }
+
+    /**
+     * Test that findByEmail will return null when the user email don't exists.
+     */
+    @Test
+    public void testFindByEmailOnUnExistingEmail() {
+        User user = repository.findByEmail(unExistingUser.getEmail());
         assertNull(user);
     }
 
@@ -129,11 +150,9 @@ public class UserRepositoryTest {
     public void testStore() {
         User user = repository.save(unExistingUser);
         assertEquals(NUMBER_OF_USERS + 1, repository.count());
-        assertNotNull(user);
-        this.assertUser(unExistingUser, user);
-        User findUser = repository.findOne(unExistingUserId);
-        assertNotNull(findUser);
-        this.assertUser(unExistingUser, findUser);
+        assertEquals(unExistingUser, user);
+        User savedUser = repository.findOne(unExistingUserId);
+        assertEquals(unExistingUser, savedUser);
     }
 
     /**
@@ -144,7 +163,9 @@ public class UserRepositoryTest {
         user1.setEmail("new@user.com");
         User user = repository.save(user1);
         assertEquals(NUMBER_OF_USERS, repository.count());
-        this.assertUser(user1, user);
+        assertEquals(user1, user);
+        User updatedUser = repository.findOne(user1Id);
+        assertEquals(user1, updatedUser);
     }
 
     /**

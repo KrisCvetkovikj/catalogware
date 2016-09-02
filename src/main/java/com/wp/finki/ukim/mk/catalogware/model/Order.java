@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Borce on 27.08.2016.
@@ -27,22 +28,22 @@ public class Order extends BaseModel implements Serializable {
     private boolean finished;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id")
     private User user;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "orders_products",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;
+    private Set<Product> products;
 
     public Order() {
     }
 
     public Order(long id, Date createdAt, Date updatedAt, String shippingAddress, boolean finished,
-                 User user, List<Product> products) {
+                 User user, Set<Product> products) {
         super(id);
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -52,12 +53,12 @@ public class Order extends BaseModel implements Serializable {
         this.products = products;
     }
 
-    public Order(long id, Date createdAt, Date updatedAt, String shippingAddress, boolean finished) {
-        this(id, createdAt, updatedAt, shippingAddress, finished, null, null);
+    public Order(long id, Date createdAt, Date updatedAt, String shippingAddress, boolean finished, User user) {
+        this(id, createdAt, updatedAt, shippingAddress, finished, user, null);
     }
 
-    public Order(Date createdAt, Date updatedAt, String shippingAddress, boolean finished) {
-        this(0, createdAt, updatedAt, shippingAddress, finished);
+    public Order(Date createdAt, Date updatedAt, String shippingAddress, boolean finished, User user) {
+        this(0, createdAt, updatedAt, shippingAddress, finished, user);
     }
 
     public Date getCreatedAt() {
@@ -100,11 +101,23 @@ public class Order extends BaseModel implements Serializable {
         this.user = user;
     }
 
-    public List<Product> getProducts() {
+    public Set<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Order)) {
+            return false;
+        }
+        Order order = (Order) obj;
+        return super.equalFields(this.id, order.getId()) &&
+                super.equalFields(this.createdAt, order.getCreatedAt()) &&
+                super.equalFields(this.shippingAddress, order.getShippingAddress()) &&
+                this.finished == order.isFinished();
     }
 }

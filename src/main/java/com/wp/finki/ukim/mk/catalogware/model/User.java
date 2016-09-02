@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Borce on 26.08.2016.
@@ -35,26 +35,26 @@ public class User extends BaseModel implements Serializable {
     private Role role;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Basket basket;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<Order> orders;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private Set<Order> orders;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "admin")
-    private List<Product> products;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "admin")
+    private Set<Product> products;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user")
-    private List<ProductLike> likes;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.user")
+    private Set<ProductLike> likes;
 
     public User() {
     }
 
     public User(long id, String name, String email, String password, Date createdAt, Role role,
-                Basket basket, List<Order> orders, List<ProductLike> likes, List<Product> products) {
+                Basket basket, Set<Order> orders, Set<ProductLike> likes, Set<Product> products) {
         super(id);
         this.name = name;
         this.email = email;
@@ -123,27 +123,41 @@ public class User extends BaseModel implements Serializable {
         this.basket = basket;
     }
 
-    public List<Order> getOrders() {
+    public Set<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(Set<Order> orders) {
         this.orders = orders;
     }
 
-    public List<ProductLike> getLikes() {
+    public Set<ProductLike> getLikes() {
         return likes;
     }
 
-    public void setLikes(List<ProductLike> likes) {
+    public void setLikes(Set<ProductLike> likes) {
         this.likes = likes;
     }
 
-    public List<Product> getProducts() {
+    public Set<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof User)) {
+            return false;
+        }
+        User user = (User) obj;
+        return super.equalFields(this.id, user.getId()) &&
+                super.equalFields(this.name, user.getName()) &&
+                super.equalFields(this.email, user.getEmail()) &&
+                super.equalFields(this.password, user.getPassword()) &&
+                super.equalFields(this.createdAt, user.getCreatedAt()) &&
+                super.equalFields(this.role, user.getRole());
     }
 }
