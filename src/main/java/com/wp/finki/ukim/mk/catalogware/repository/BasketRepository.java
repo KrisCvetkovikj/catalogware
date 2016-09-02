@@ -8,5 +8,4 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * Created by Borce on 01.09.2016.
  */
 public interface BasketRepository extends JpaRepository<Basket, Long>, JpaSpecificationExecutor<Basket> {
-
 }

@@ -17,9 +17,19 @@ public interface UserService {
 
     User findByEmail(String email);
 
+    boolean exists(long id);
+
+    boolean exists(User user);
+
+    long count();
+
     User store(User user);
 
-    User update(User user, long id);
+    User store(String name, String email, String password);
 
-    void delete();
+    User store(String username, String email, String password, User.Role role);
+
+    User update(long id, User user);
+
+    boolean delete(long id);
 }

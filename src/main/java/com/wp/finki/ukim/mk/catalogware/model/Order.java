@@ -15,16 +15,16 @@ import java.util.Set;
 @Table(name = "orders")
 public class Order extends BaseModel implements Serializable {
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
 
-    @Column(name = "shipping_address")
+    @Column(name = "shipping_address", nullable = false)
     private String shippingAddress;
 
-    @Column(name = "finished")
+    @Column(name = "finished", nullable = false)
     private boolean finished;
 
     @JsonIgnore

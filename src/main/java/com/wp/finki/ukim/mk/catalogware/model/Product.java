@@ -17,23 +17,23 @@ import java.util.Set;
 @Table(name = "products")
 public class Product extends BaseModel implements Serializable {
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", length = 10000)
+    @Column(name = "description", length = 10000, nullable = false)
     private String description;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private double price;
 
     @JsonIgnore
     @Column(name = "image", length = 10240)
     private byte[] image;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
 
     @JsonIgnore
@@ -87,6 +87,10 @@ public class Product extends BaseModel implements Serializable {
     public Product(String name, String description, double price, byte[] image, Date createdAt,
                    Date updatedAt, User admin) {
         this(0, name, description, price, image, createdAt, updatedAt, admin);
+    }
+
+    public Product(long id) {
+        super(id);
     }
 
     public String getName() {

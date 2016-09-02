@@ -19,19 +19,20 @@ public class User extends BaseModel implements Serializable {
         CUSTOMER
     }
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
     private Role role;
 
     @JsonIgnore
@@ -73,6 +74,10 @@ public class User extends BaseModel implements Serializable {
 
     public User(String name, String email, String password, Date createdAt, Role role) {
         this(0, name, email, password, createdAt, role);
+    }
+
+    public User(long id) {
+        super(id);
     }
 
     public String getName() {

@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "categories")
 public class Category extends BaseModel implements Serializable {
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @JsonIgnore

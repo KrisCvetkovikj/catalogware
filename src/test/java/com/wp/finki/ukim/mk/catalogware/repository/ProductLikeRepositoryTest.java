@@ -171,6 +171,28 @@ public class ProductLikeRepositoryTest {
     }
 
     /**
+     * Test the behavior when save is called with existing primary key on which the user and the
+     * product are empty and only have their ids.
+     */
+    @Test
+    public void testUpdateWhenUserAndProductContainsOnlyThePrimaryKey() {
+        final short newRating = 4;
+        User user = new User(user2.getId());
+        Product product = new Product(product1.getId());
+        like3.setPk(new ProductLikeId(user, product));
+        like3.setRating(newRating);
+        ProductLike like = repository.save(like3);
+        assertEquals(NUMBER_OF_LIKES, repository.count());
+        assertEquals(user.getId(), like.getPk().getUser().getId());
+        assertEquals(product.getId(), like.getPk().getProduct().getId());
+        assertEquals(newRating, like.getRating());
+        ProductLike updatedLike = repository.findOne(like3.getPk());
+        assertEquals(user.getId(), updatedLike.getPk().getUser().getId());
+        assertEquals(product.getId(), updatedLike.getPk().getProduct().getId());
+        assertEquals(newRating, updatedLike.getRating());
+    }
+
+    /**
      * Test that delete will remove the like from the database.
      */
     @Test
@@ -178,5 +200,18 @@ public class ProductLikeRepositoryTest {
         repository.delete(like1.getPk());
         assertEquals(NUMBER_OF_LIKES - 1, repository.count());
         assertNull(repository.findOne(like1.getPk()));
+    }
+
+    /**
+     * Test the behavior when delete is called with existing primary key on which the user and the
+     * product are empty and only contains their id.
+     */
+    @Test
+    public void testDeleteWhenUserAndProductOnlyContainsThePrimaryKey() {
+        User user = new User(like2.getPk().getUser().getId());
+        Product product = new Product(like2.getPk().getProduct().getId());
+        repository.delete(new ProductLikeId(user, product));
+        assertEquals(NUMBER_OF_LIKES - 1, repository.count());
+        assertNull(repository.findOne(like2.getPk()));
     }
 }
