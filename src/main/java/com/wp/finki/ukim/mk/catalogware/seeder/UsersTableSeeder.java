@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * Created by Borce on 26.08.2016.
  */
-@Component
+//@Component
 public class UsersTableSeeder {
 
     @Autowired

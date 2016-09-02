@@ -6,53 +6,46 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Borce on 27.08.2016.
  */
 @Entity
 @Table(name = "baskets")
-public class Basket implements Serializable {
-
-    @Id
-    @Column(name = "user_id")
-    private Long id;
+public class Basket extends BaseModel implements Serializable {
 
     @Column(name = "updated_at")
     private Date updatedAt;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id", referencedColumnName = "id")
     private User user;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "baskets_products",
             joinColumns = @JoinColumn(name = "basket_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;
+    private Set<Product> products;
 
     public Basket() {
     }
 
-    public Basket(Long id, Date updatedAt, User user, List<Product> products) {
-        this.id = id;
+    public Basket(long id, Date updatedAt, User user, Set<Product> products) {
+        super(id);
         this.updatedAt = updatedAt;
         this.user = user;
         this.products = products;
     }
 
-    public Basket(Long id, Date updatedAt) {
-        this(id, updatedAt, null, null);
+    public Basket(long id, Date updatedAt, User user) {
+        this(id, updatedAt, user, null);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public Basket(Date updatedAt, User user) {
+        this(0, updatedAt, user);
     }
 
     public Date getUpdatedAt() {
@@ -71,11 +64,21 @@ public class Basket implements Serializable {
         this.user = user;
     }
 
-    public List<Product> getProducts() {
+    public Set<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (! (obj instanceof Basket)) {
+            return false;
+        }
+        Basket basket = (Basket) obj;
+        return super.equalFields(this.id, basket.getId()) &&
+                super.equalFields(this.updatedAt, basket.getUpdatedAt());
     }
 }

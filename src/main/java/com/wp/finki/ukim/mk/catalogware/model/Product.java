@@ -5,20 +5,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Blob;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Borce on 27.08.2016.
  */
 @Entity
 @Table(name = "products")
-public class Product implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class Product extends BaseModel implements Serializable {
 
     @Column(name = "name")
     private String name;
@@ -30,8 +27,8 @@ public class Product implements Serializable {
     private double price;
 
     @JsonIgnore
-    @Column(name = "image")
-    private Blob image;
+    @Column(name = "image", length = 10240)
+    private byte[] image;
 
     @Column(name = "created_at")
     private Date createdAt;
@@ -40,42 +37,35 @@ public class Product implements Serializable {
     private Date updatedAt;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "admin_id")
     private User admin;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "products_categories",
             joinColumns =  @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private List<Category> categories;
+    private Set<Category> categories;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "products")
-    private List<Basket> baskets;
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "products")
+    private Set<Basket> baskets;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "products")
-    private List<Order> orders;
-
-//    @JsonIgnore
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "products_likes",
-//            joinColumns = @JoinColumn(name = "product_id"),
-//            inverseJoinColumns = @JoinColumn(name = "user_id"))
-//    private List<User> likes;
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "products")
+    private Set<Order> orders;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.product")
-    private List<ProductLike> likes;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.product")
+    private Set<ProductLike> likes;
 
     public Product() {
     }
 
-    public Product(Long id, String name, String description, double price, Blob image, Date createdAt,
-                   Date updatedAt, User admin, List<Category> categories, List<Basket> baskets,
-                   List<Order> orders, List<User> likes) {
-        this.id = id;
+    public Product(long id, String name, String description, double price, byte[] image, Date createdAt,
+                   Date updatedAt, User admin, Set<Category> categories, Set<Basket> baskets,
+                   Set<Order> orders, Set<ProductLike> likes) {
+        super(id);
         this.name = name;
         this.description = description;
         this.price = price;
@@ -86,20 +76,17 @@ public class Product implements Serializable {
         this.categories = categories;
         this.baskets = baskets;
         this.orders = orders;
-//        this.likes = likes;
+        this.likes = likes;
     }
 
-    public Product(Long id, String name, String description, double price, Blob image,
-                   Date createdAt, Date updatedAt) {
-        this(id, name, description, price, image, createdAt, updatedAt, null, null, null, null, null);
+    public Product(long id, String name, String description, double price, byte[] image,
+                   Date createdAt, Date updatedAt, User admin) {
+        this(id, name, description, price, image, createdAt, updatedAt, admin, null, null, null, null);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public Product(String name, String description, double price, byte[] image, Date createdAt,
+                   Date updatedAt, User admin) {
+        this(0, name, description, price, image, createdAt, updatedAt, admin);
     }
 
     public String getName() {
@@ -126,11 +113,11 @@ public class Product implements Serializable {
         this.price = price;
     }
 
-    public Blob getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(Blob image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
@@ -158,35 +145,50 @@ public class Product implements Serializable {
         this.admin = admin;
     }
 
-    public List<Category> getCategories() {
+    public Set<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(Set<Category> categories) {
         this.categories = categories;
     }
 
-    public List<Basket> getBaskets() {
+    public Set<Basket> getBaskets() {
         return baskets;
     }
 
-    public void setBaskets(List<Basket> baskets) {
+    public void setBaskets(Set<Basket> baskets) {
         this.baskets = baskets;
     }
 
-    public List<Order> getOrders() {
+    public Set<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(Set<Order> orders) {
         this.orders = orders;
     }
 
-//    public List<User> getLikes() {
-//        return likes;
-//    }
-//
-//    public void setLikes(List<User> likes) {
-//        this.likes = likes;
-//    }
+    public Set<ProductLike> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Set<ProductLike> likes) {
+        this.likes = likes;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (! (obj instanceof Product)) {
+            return false;
+        }
+        Product product = (Product) obj;
+        return super.equalFields(this.id, product.getId()) &&
+                super.equalFields(this.name, product.getName()) &&
+                super.equalFields(this.description, product.description) &&
+                this.price == product.getPrice() &&
+                ((this.image == null && product.image == null) || Arrays.equals(image, product.getImage())) &&
+                super.equalFields(this.createdAt, product.getCreatedAt()) &&
+                super.equalFields(this.updatedAt, product.getUpdatedAt());
+    }
 }

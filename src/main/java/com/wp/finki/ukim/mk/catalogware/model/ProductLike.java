@@ -32,8 +32,6 @@ public class ProductLike implements Serializable {
         return pk;
     }
 
-
-
     public void setPk(ProductLikeId pk) {
         this.pk = pk;
     }
@@ -44,5 +42,15 @@ public class ProductLike implements Serializable {
 
     public void setRating(short rating) {
         this.rating = rating;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (! (obj instanceof ProductLike)) {
+            return false;
+        }
+        ProductLike like = (ProductLike) obj;
+        return this.pk != null && this.pk.equals(like.pk) &&
+                this.rating == like.getRating();
     }
 }
