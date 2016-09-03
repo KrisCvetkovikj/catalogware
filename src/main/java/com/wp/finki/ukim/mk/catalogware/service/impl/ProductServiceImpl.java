@@ -78,8 +78,7 @@ public class ProductServiceImpl implements ProductService {
         product.setUpdatedAt(new Date());
         Product result = repository.save(product);
         if (result == null) {
-            throw new ProductChangeFailedException("Storing the product failed",
-                    "Error occurred while saving the product");
+            throw new ProductChangeFailedException("Error occurred while saving the product");
         }
         return result;
     }
@@ -100,8 +99,7 @@ public class ProductServiceImpl implements ProductService {
         product.setUpdatedAt(new Date());
         Product result = repository.save(product);
         if (result == null) {
-            throw new ProductChangeFailedException("Updating the product failed",
-                    "Error occurred while updating the product");
+            throw new ProductChangeFailedException("Error occurred while updating the product");
         }
         return result;
     }
@@ -115,8 +113,7 @@ public class ProductServiceImpl implements ProductService {
         repository.delete(id);
         boolean deleted = !this.exists(id);
         if (!deleted) {
-            throw new ProductChangeFailedException("Deleting the product failed",
-                    "Error occurred while deleting the product");
+            throw new ProductChangeFailedException("Error occurred while deleting the product");
         }
         return true;
     }

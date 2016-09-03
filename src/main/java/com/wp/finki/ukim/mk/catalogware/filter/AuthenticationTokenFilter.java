@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
@@ -48,14 +49,19 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
                 token = parts[1];
                 String username = jwtUtils.getUsernameFromToken(token);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                    if (jwtUtils.validateToken(token, userDetails)) {
-                        logger.info("jwt token valid");
-                        UsernamePasswordAuthenticationToken authentication = new
-                                UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        authentication.setDetails(new WebAuthenticationDetailsSource()
-                                .buildDetails(httpServletRequest));
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    try {
+                        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                        if (jwtUtils.validateToken(token, userDetails)) {
+                            logger.info("jwt token valid");
+                            UsernamePasswordAuthenticationToken authentication = new
+                                    UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                            authentication.setDetails(new WebAuthenticationDetailsSource()
+                                    .buildDetails(httpServletRequest));
+                            SecurityContextHolder.getContext().setAuthentication(authentication);
+                        }
+                    } catch (UsernameNotFoundException exp) {
+                        logger.info(String.format("token contains user data, %s that can't be find in the database",
+                                username));
                     }
                 }
             }

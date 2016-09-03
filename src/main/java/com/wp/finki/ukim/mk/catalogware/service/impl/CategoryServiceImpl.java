@@ -1,5 +1,6 @@
 package com.wp.finki.ukim.mk.catalogware.service.impl;
 
+import com.wp.finki.ukim.mk.catalogware.exception.CategoryChangeFailedException;
 import com.wp.finki.ukim.mk.catalogware.model.Category;
 import com.wp.finki.ukim.mk.catalogware.repository.CategoryRepository;
 import com.wp.finki.ukim.mk.catalogware.service.CategoryService;
@@ -24,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category get(long id) {
-        return repository.getOne(id);
+        return repository.findOne(id);
     }
 
     @Override
@@ -58,7 +59,11 @@ public class CategoryServiceImpl implements CategoryService {
             throw new IllegalArgumentException(String
                     .format("cant save category, category with name %s already exists", category.getName()));
         }
-        return repository.save(category);
+        Category result = repository.save(category);
+        if (result == null) {
+            throw new CategoryChangeFailedException("Error occurred while storing the category");
+        }
+        return result;
     }
 
     @Override
@@ -74,7 +79,11 @@ public class CategoryServiceImpl implements CategoryService {
                     .format("can't update category, category with id %d don't exists", id));
         }
         category.setId(id);
-        return repository.save(category);
+        Category result = repository.save(category);
+        if (result == null) {
+            throw new CategoryChangeFailedException("Error occurred while updating the category");
+        }
+        return result;
     }
 
     @Override
@@ -84,6 +93,10 @@ public class CategoryServiceImpl implements CategoryService {
                     .format("can;t delete category, category with id %d don't exists", id));
         }
         repository.delete(id);
-        return !this.exists(id);
+        boolean deleted = !this.exists(id);
+        if (!deleted) {
+            throw new CategoryChangeFailedException("Error occurred while deleting the category");
+        }
+        return true;
     }
 }

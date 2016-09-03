@@ -11,7 +11,7 @@ import org.springframework.validation.Validator;
  * Created by Borce on 02.09.2016.
  */
 @Component
-public class RegisterUserValidator implements Validator {
+public class RegisterUserRequestValidator implements Validator {
 
     @Autowired
     private UserService userService;

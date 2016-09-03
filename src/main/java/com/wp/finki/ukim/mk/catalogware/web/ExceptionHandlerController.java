@@ -1,7 +1,6 @@
 package com.wp.finki.ukim.mk.catalogware.web;
 
-import com.wp.finki.ukim.mk.catalogware.exception.BadRequestException;
-import com.wp.finki.ukim.mk.catalogware.exception.NotAuthenticatedException;
+import com.wp.finki.ukim.mk.catalogware.exception.*;
 import com.wp.finki.ukim.mk.catalogware.model.response.ErrorResponse;
 import com.wp.finki.ukim.mk.catalogware.model.response.Response;
 import org.springframework.http.HttpStatus;
@@ -44,5 +43,23 @@ public class ExceptionHandlerController {
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public Response accessForbiddenException(AccessDeniedException exp) {
         return new Response(403, "Access Denied", "You don't have permissions to access to this resource");
+    }
+
+    @ExceptionHandler(ResourceNotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response resourceNotFoundException() {
+        return new Response(404, "Not Found", "The requested resource was not found on the server");
+    }
+
+    @ExceptionHandler(CategoryChangeFailedException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Response categoryChangeFailed(CategoryChangeFailedException exp) {
+        return new Response(500, "Category change failed", exp.getMessage());
+    }
+
+    @ExceptionHandler(ProductChangeFailedException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public Response productChangeFailedException(ProductChangeFailedException exp) {
+        return new Response(500, "Product change failed", exp.getMessage());
     }
 }

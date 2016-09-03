@@ -7,7 +7,7 @@ import com.wp.finki.ukim.mk.catalogware.model.response.AuthenticateUserResponse;
 import com.wp.finki.ukim.mk.catalogware.model.security.AuthUser;
 import com.wp.finki.ukim.mk.catalogware.service.AuthService;
 import com.wp.finki.ukim.mk.catalogware.utils.ValidationErrorsMessageConverter;
-import com.wp.finki.ukim.mk.catalogware.validator.RegisterUserValidator;
+import com.wp.finki.ukim.mk.catalogware.validator.RegisterUserRequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,7 +31,7 @@ public class AuthController {
     private AuthService authService;
 
     @Autowired
-    private RegisterUserValidator registerUserValidator;
+    private RegisterUserRequestValidator registerUserValidator;
 
     @InitBinder("registerUserRequest")
     public void initBinder(WebDataBinder binder) {
