@@ -4,8 +4,10 @@ import com.wp.finki.ukim.mk.catalogware.model.Product;
 import com.wp.finki.ukim.mk.catalogware.model.ProductLike;
 import com.wp.finki.ukim.mk.catalogware.model.ProductLikeId;
 import com.wp.finki.ukim.mk.catalogware.model.User;
+import com.wp.finki.ukim.mk.catalogware.model.security.AuthUser;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Borce on 02.09.2016.
@@ -32,7 +34,9 @@ public interface ProductLikeService {
 
     ProductLike update(long userId, long productId, short rating);
 
-    boolean delete(ProductLikeId id);
+    void delete(ProductLikeId id);
 
-    boolean delete(long userId, long productId);
+    void delete(long userId, long productId);
+
+    Set<ProductLike> getProductLikes(long productId);
 }

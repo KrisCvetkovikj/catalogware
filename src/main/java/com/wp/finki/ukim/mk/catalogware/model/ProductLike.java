@@ -1,6 +1,8 @@
 package com.wp.finki.ukim.mk.catalogware.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 /**
@@ -18,6 +20,8 @@ public class ProductLike implements Serializable {
     private ProductLikeId pk;
 
     @Column(name = "rating")
+    @Min(value = 1, message = "Like rating can't be less than 1")
+    @Max(value = 5, message = "Like rating can't be greater that 5")
     private short rating;
 
     public ProductLike() {

@@ -2,6 +2,8 @@ package com.wp.finki.ukim.mk.catalogware.service;
 
 import com.wp.finki.ukim.mk.catalogware.model.Product;
 import com.wp.finki.ukim.mk.catalogware.model.User;
+import com.wp.finki.ukim.mk.catalogware.model.security.AuthUser;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -11,6 +13,8 @@ import java.util.List;
 public interface ProductService {
 
     List<Product> getAll();
+
+    List<Product> getAll(int page, int size, boolean latest);
 
     Product get(long id);
 
@@ -22,9 +26,19 @@ public interface ProductService {
 
     Product store(Product product);
 
-    Product store(String name, String description, double price, byte[] image, User admin);
+    Product store(String name, String description, double price, MultipartFile image, AuthUser authUser);
 
     Product update(long id, Product product);
 
-    boolean delete(long id);
+    Product update(long id, String name, String description, double price, MultipartFile image);
+
+    void delete(long id);
+
+    long countBasketProducts(long basketId);
+
+    List<Product> filterByCategories(String category);
+
+    List<Product> filterByCategories(int page, int size, boolean latest, String category);
+
+    List<Product> getOrderProducts(long orderId);
 }

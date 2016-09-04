@@ -1,5 +1,6 @@
 package com.wp.finki.ukim.mk.catalogware.model.request;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -7,7 +8,10 @@ import java.io.Serializable;
  */
 public class AuthenticateUserRequest implements Serializable {
 
+    @NotNull(message = "Email field is required")
     private String email;
+
+    @NotNull(message = "Password field is required")
     private String password;
 
     public AuthenticateUserRequest() {

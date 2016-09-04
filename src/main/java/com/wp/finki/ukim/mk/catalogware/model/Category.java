@@ -3,6 +3,7 @@ package com.wp.finki.ukim.mk.catalogware.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
@@ -15,10 +16,11 @@ import java.util.Set;
 public class Category extends BaseModel implements Serializable {
 
     @Column(name = "name", unique = true, nullable = false)
+    @NotNull(message = "Name field is required")
     private String name;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "categories")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
     private Set<Product> products;
 
     public Category() {

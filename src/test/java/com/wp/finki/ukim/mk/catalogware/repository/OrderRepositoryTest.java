@@ -1,10 +1,12 @@
 package com.wp.finki.ukim.mk.catalogware.repository;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
 import com.wp.finki.ukim.mk.TestUtils;
 import com.wp.finki.ukim.mk.catalogware.CatalogwareApplication;
 import com.wp.finki.ukim.mk.catalogware.model.Order;
 import com.wp.finki.ukim.mk.catalogware.model.Product;
 import com.wp.finki.ukim.mk.catalogware.model.User;
+import com.wp.finki.ukim.mk.catalogware.utils.ProductImageUtils;
 import com.wp.finki.ukim.mk.catalogware.utils.SetUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -45,11 +47,14 @@ public class OrderRepositoryTest {
     @Autowired
     private ApplicationContext context;
 
+    @Autowired
+    private ProductImageUtils productImageUtils;
+
     private User user1 = new User(1, "User 1", "user@user.com", "pass", new Date(), User.Role.CUSTOMER);
     private User user2 = new User(2, "User 2", "user-2@user.com", "pass", new Date(), User.Role.CUSTOMER);
-    private Product product1 = new Product(1, "Product 1", "Test product 1", 123, null, new Date(), new Date(), user1);
-    private Product product2 = new Product(2, "Product 2", "Test product 2", 123, null, new Date(), new Date(), user2);
-    private Product product3 = new Product(3, "Product 3", "Test product 3", 123, null, new Date(), new Date(), user1);
+    private Product product1 = new Product(1, "Product 1", "Temp product 1", 123, null, new Date(), new Date(), user1);
+    private Product product2 = new Product(2, "Product 2", "Temp product 2", 123, null, new Date(), new Date(), user2);
+    private Product product3 = new Product(3, "Product 3", "Temp product 3", 123, null, new Date(), new Date(), user1);
 
     private final int NUMBER_OF_ORDERS = 3;
     private final long order1Id = 1;
@@ -63,6 +68,10 @@ public class OrderRepositoryTest {
 
     @Before
     public void setup() {
+        byte[] image = productImageUtils.getBytes();
+        product1.setImage(image);
+        product2.setImage(image);
+        product3.setImage(image);
         Set<Product> products1 = new HashSet<>();
         products1.add(product1);
         products1.add(product2);
@@ -111,7 +120,7 @@ public class OrderRepositoryTest {
     }
 
     /**
-     * Test that findAll will return all orders in the database.
+     * Temp that findAll will return all orders in the database.
      */
     @Test
     public void testFindAll() {
@@ -134,7 +143,7 @@ public class OrderRepositoryTest {
     }
 
     /**
-     * Test that findOne will return the order when the id exists in the database.
+     * Temp that findOne will return the order when the id exists in the database.
      */
     @Test
     public void testFindOne() {
@@ -143,7 +152,7 @@ public class OrderRepositoryTest {
     }
 
     /**
-     * Test that findOne will return null when the id don't exists.
+     * Temp that findOne will return null when the id don't exists.
      */
     @Test
     public void testFindOneOnUnExistingId() {
@@ -151,7 +160,7 @@ public class OrderRepositoryTest {
     }
 
     /**
-     * Test that count will return the number of orders in the database.
+     * Temp that count will return the number of orders in the database.
      */
     @Test
     public void testCount() {
@@ -159,7 +168,7 @@ public class OrderRepositoryTest {
     }
 
     /**
-     * Test that store will create a new order in the database.
+     * Temp that store will create a new order in the database.
      */
     @Test
     public void testStore() {
@@ -171,7 +180,7 @@ public class OrderRepositoryTest {
     }
 
     /**
-     * Test that save will update the order data when the order id exists.
+     * Temp that save will update the order data when the order id exists.
      */
     @Test
     public void testUpdate() {
@@ -185,12 +194,20 @@ public class OrderRepositoryTest {
     }
 
     /**
-     * Test that delete will remove the order data from the database.
+     * Temp that delete will remove the order data from the database.
      */
     @Test
     public void testDelete() {
         repository.delete(order3Id);
         assertEquals(NUMBER_OF_ORDERS - 1, repository.count());
         assertNull(repository.findOne(order3Id));
+    }
+
+    @Test
+    public void testFindUserId() {
+        List<Order> orders = repository.findByUserId(user1.getId());
+        assertEquals(2, orders.size());
+        assertEquals(order1, orders.get(0));
+        assertEquals(order3, orders.get(1));
     }
 }

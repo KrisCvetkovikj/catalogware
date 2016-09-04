@@ -1,5 +1,8 @@
 package com.wp.finki.ukim.mk.catalogware.service.impl;
 
+import com.wp.finki.ukim.mk.catalogware.exception.CategoryChangeFailedException;
+import com.wp.finki.ukim.mk.catalogware.exception.CategoryNotFoundException;
+import com.wp.finki.ukim.mk.catalogware.exception.OrderChangeFailedException;
 import com.wp.finki.ukim.mk.catalogware.model.Category;
 import com.wp.finki.ukim.mk.catalogware.repository.CategoryRepository;
 import com.wp.finki.ukim.mk.catalogware.service.CategoryService;
@@ -24,7 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category get(long id) {
-        return repository.getOne(id);
+        return repository.findOne(id);
     }
 
     @Override
@@ -58,7 +61,12 @@ public class CategoryServiceImpl implements CategoryService {
             throw new IllegalArgumentException(String
                     .format("cant save category, category with name %s already exists", category.getName()));
         }
-        return repository.save(category);
+        try {
+            return repository.save(category);
+        } catch (Exception exp) {
+            exp.printStackTrace();
+            throw new CategoryChangeFailedException("error occurred while creating the category");
+        }
     }
 
     @Override
@@ -70,20 +78,29 @@ public class CategoryServiceImpl implements CategoryService {
     public Category update(long id, Category category) {
         this.validateDate(category);
         if (!this.exists(id)) {
-            throw new IllegalArgumentException(String
+            throw new CategoryNotFoundException(String
                     .format("can't update category, category with id %d don't exists", id));
         }
         category.setId(id);
-        return repository.save(category);
+        try {
+            return repository.save(category);
+        } catch (Exception exp) {
+            exp.printStackTrace();
+            throw new CategoryChangeFailedException("Error occurred while updating the category");
+        }
     }
 
     @Override
-    public boolean delete(long id) {
+    public void delete(long id) {
         if (!this.exists(id)) {
-            throw new IllegalArgumentException(String
+            throw new CategoryNotFoundException(String
                     .format("can;t delete category, category with id %d don't exists", id));
         }
-        repository.delete(id);
-        return !this.exists(id);
+        try {
+            repository.delete(id);
+        } catch (Exception exp) {
+            exp.printStackTrace();
+            throw new CategoryChangeFailedException("Error occurred while deleting the category");
+        }
     }
 }
