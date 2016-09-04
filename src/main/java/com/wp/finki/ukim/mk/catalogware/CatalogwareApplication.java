@@ -12,7 +12,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import static org.slf4j.LoggerFactory.*;
 
 @SpringBootApplication
-@EnableWebMvc
 public class CatalogwareApplication {
 
 	public static void main(String[] args) {

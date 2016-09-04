@@ -1,8 +1,10 @@
 package com.wp.finki.ukim.mk.catalogware.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -21,19 +23,20 @@ public class Order extends BaseModel implements Serializable {
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
 
-    @Column(name = "shipping_address", nullable = false)
+    @Column(name = "shipping_address")
+    @NotNull(message = "Shipping address is required")
     private String shippingAddress;
 
     @Column(name = "finished", nullable = false)
     private boolean finished;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id")
     private User user;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "orders_products",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))

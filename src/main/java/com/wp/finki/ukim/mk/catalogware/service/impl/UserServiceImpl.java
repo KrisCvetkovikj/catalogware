@@ -1,5 +1,7 @@
 package com.wp.finki.ukim.mk.catalogware.service.impl;
 
+import com.wp.finki.ukim.mk.catalogware.exception.UserChangeFailed;
+import com.wp.finki.ukim.mk.catalogware.model.Basket;
 import com.wp.finki.ukim.mk.catalogware.model.User;
 import com.wp.finki.ukim.mk.catalogware.repository.UserRepository;
 import com.wp.finki.ukim.mk.catalogware.service.UserService;
@@ -73,6 +75,9 @@ public class UserServiceImpl implements UserService {
         if (user.getPassword() == null) {
             throw new IllegalArgumentException("user password can't be null");
         }
+        if (user.getRole() == null) {
+            throw new IllegalArgumentException("user role can't be null");
+        }
     }
 
     @Override
@@ -82,9 +87,18 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException(String
                     .format("can't save user, user with email %s already exists", user.getEmail()));
         }
+        if (user.getRole().equals(User.Role.CUSTOMER)) {
+            Basket basket = new Basket(new Date(), user);
+            user.setBasket(basket);
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreatedAt(new Date());
-        return repository.save(user);
+        try {
+            return repository.save(user);
+        } catch (Exception exp) {
+            exp.printStackTrace();
+            throw new UserChangeFailed("error while saving the user");
+        }
     }
 
     @Override
@@ -106,16 +120,25 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException(String.format("can't update user, user with id %d don't exists", id));
         }
         user.setId(id);
-        return repository.save(user);
+        try {
+            return repository.save(user);
+        } catch(Exception exp) {
+            exp.printStackTrace();
+            throw new UserChangeFailed("error occurred while updating the user data");
+        }
     }
 
     @Override
-    public boolean delete(long id) {
+    public void delete(long id) {
         if (!this.exists(id)) {
             throw new IllegalArgumentException(String
                     .format("can't delete user, user with id %d don't exists", id));
         }
-        repository.delete(id);
-        return !this.exists(id);
+        try {
+            repository.delete(id);
+        } catch (Exception exp) {
+            exp.printStackTrace();
+            throw new UserChangeFailed("error occurred while deleting the user data");
+        }
     }
 }

@@ -37,6 +37,7 @@ dependencies {
 	compile "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
 	compile "mysql:mysql-connector-java:5.1.13"
 	compile "io.jsonwebtoken:jjwt:0.6.0"
+	compile "com.thedeanda:lorem:2.0"
 	compile "com.h2database:h2"
 	testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 }

@@ -2,9 +2,9 @@ package com.wp.finki.ukim.mk.catalogware.service;
 
 import com.wp.finki.ukim.mk.catalogware.model.Basket;
 import com.wp.finki.ukim.mk.catalogware.model.Product;
+import com.wp.finki.ukim.mk.catalogware.model.User;
 
 import java.util.List;
-import java.util.prefs.BackingStoreException;
 
 /**
  * Created by Borce on 02.09.2016.
@@ -19,7 +19,15 @@ public interface BasketService {
 
     boolean exists(Basket basket);
 
+    Basket addProduct(long id, long productId);
+
     Basket addProduct(long id, Product product);
 
-    void addProducts(long id, List<Product> products);
+    Basket addProducts(long id, List<Product> products);
+
+    Basket removeProduct(long id, long productId);
+
+    boolean hasProduct(long id, long productId);
+
+    void checkout(User user, String shippingAddress);
 }

@@ -66,7 +66,7 @@ public class AuthController {
         return new AuthenticateUserResponse(token, authUser.getName(), authUser.getRole());
     }
 
-    @PreAuthorize("@authServiceImpl.isAuthenticated(#user)")
+    @PreAuthorize("@authService.isAuthenticated(#user)")
     @GetMapping("/me")
     public Map<String, Object> user(@AuthenticationPrincipal AuthUser user) {
         Map<String, Object> result = new HashMap<>();

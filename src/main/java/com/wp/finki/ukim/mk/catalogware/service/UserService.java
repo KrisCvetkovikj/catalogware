@@ -31,5 +31,5 @@ public interface UserService {
 
     User update(long id, User user);
 
-    boolean delete(long id);
+    void delete(long id);
 }

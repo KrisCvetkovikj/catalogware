@@ -18,7 +18,7 @@ import java.security.Principal;
 /**
  * Created by Borce on 26.08.2016.
  */
-@Service
+@Service(value = "authService")
 public class AuthServiceImpl implements AuthService {
 
     @Autowired

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Blob;
 import java.util.Arrays;
@@ -19,47 +21,50 @@ import java.util.Set;
 public class Product extends BaseModel implements Serializable {
 
     @Column(name = "name", nullable = false)
+    @NotNull(message = "The name field is required")
     private String name;
 
     @Column(name = "description", length = 10000, nullable = false)
+    @NotNull(message = "The description field is required")
     private String description;
 
-    @Column(name = "price", nullable = false)
+    @Column(name = "price", nullable = false, precision = 2, scale = 2)
+    @Min(value = 1, message = "The price must be greater than zero")
     private double price;
 
     @JsonIgnore
-    @Column(name = "image", length = 10240)
+    @Column(name = "image", length = 20480)
+    @NotNull(message = "The product image is required")
     private byte[] image;
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "admin_id")
     private User admin;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "products_categories",
             joinColumns =  @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "products")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "products")
     private Set<Basket> baskets;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "products")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "products")
     private Set<Order> orders;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.product")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.product")
     private Set<ProductLike> likes;
 
     public Product() {
