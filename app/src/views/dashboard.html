@@ -1,0 +1,189 @@
+<div class='dashboard'>
+	<h1 class='page-header'>
+		Admin Dashboard
+		<small>
+			Statistics Overview
+		</small>
+	</h1>
+
+	<div class="row">
+
+		<!-- Users Panel -->
+		<div class="col-xs-12 col-sm-6 col-lg-3">		
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-4">
+							<i class="fa fa-user fa-5x"></i>
+						</div>
+						<div class="col-xs-8 text-right">
+							<span class="fa-3x">{{adminCtrl.usersCount}}</span>
+							<br/>
+							<span>Users!</span>
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer">
+					<a ui-sref="root.admin-dashboard-users">
+						View All
+						<span class="pull-right">
+							<i class="fa fa-arrow-circle-o-right"></i>
+						</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- Books Panel -->
+		<div class="col-xs-12 col-sm-6 col-lg-3">
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-4">
+							<i class="fa fa-book fa-5x"></i>
+						</div>
+						<div class="col-xs-8 text-right">
+							<span class="fa-3x">{{adminCtrl.booksCount}}</span>
+							<br/>
+							<span>Books!</span>
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer">
+					<a ui-sref="root.admin-dashboard-books">
+						View All
+						<span class="pull-right">
+							<i class="fa fa-arrow-circle-o-right"></i>
+						</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- Book likes panel -->
+		<div class="col-xs-12 col-sm-6 col-lg-3">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-4">
+							<i class="fa fa-thumbs-up fa-5x"></i>
+						</div>
+						<div class="col-xs-8 text-right">
+							<span class="fa-3x">{{adminCtrl.likesCount}}</span>
+							<br/>
+							<span>Liked books!</span>
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer">
+					<a ui-sref="root.admin-dashboard-likes">
+						View All
+						<span class="pull-right">
+							<i class="fa fa-arrow-circle-o-right"></i>
+						</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- Books Orders panel -->
+		<div class="col-xs-12 col-sm-6 col-lg-3">
+			<div class="panel panel-warning">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-4">
+							<i class="fa fa-shopping-cart fa-5x"></i>
+						</div>
+						<div class="col-xs-8 text-right">
+							<span class="fa-3x">{{adminCtrl.ordersCount}}</span>
+							<br/>
+							<span>Books orders!</span>
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer">
+					<a ui-sref="root.admin-dashboard-orders">
+						View All
+						<span class="pull-right">
+							<i class="fa fa-arrow-circle-o-right"></i>
+						</span>
+					</a>
+				</div>
+			</div>
+		</div>	
+	</div>
+
+	<div class='row book-info-panel'>
+		<div class='col-sm-12 books-orders-likes-chart'>
+			<div class='panel panel-default'>
+				<div class='panel-heading'>
+					<i class='fa fa-bar-chart'></i>
+					Popular Books Statistic
+				</div>
+				<div class='panel-body'>
+					<c3chart bindto-id="chart3" chart-data="adminCtrl.booksStatisticsData" 
+					 chart-columns="adminCtrl.booksColumns" chart-x="adminCtrl.booksX">
+					  <chart-axis>
+					    <chart-axis-x axis-position="outer-center" axis-type="category">
+					          <chart-axis-x-tick tick-rotate="50"/>
+					      </chart-axis-x>					    
+					</c3chart>
+				</div>
+			</div>
+		</div>
+
+		<!-- C3 Donut Chart -->
+		<div class='col-sm-6 book-info-panel'>
+			<div class='panel panel-primary'>
+				<div class='panel-heading'>
+					<i class='fa fa-list-ol'></i>
+					Procent of books by category
+				</div>
+				<div class='panel-body'>					
+					<c3chart bindto-id="categories-books" 
+						chart-data="adminCtrl.categoriesPoints" 
+						chart-columns="adminCtrl.categoriesColumns">            			
+            			<chart-donut expand="true" title="Books by category"/>
+        			</c3chart>
+				</div>
+			</div>		
+		</div>
+
+		<div class='col-sm-6 book-info-panel'>
+			<div class='panel panel-default'>
+				<div class='panel-heading'>
+					<i class='fa fa-money'></i>
+					Latest Orders
+				</div>
+				<div class='panel-body'>					
+					<table class='table table-bordered table-striped table-hover'>
+						<thead>
+							<tr class='bold'>
+								<td>Order id</td>
+								<td>Book name</td>
+								<td>User</td>
+								<td>Order Date</td>								
+							</tr>							
+						</thead>
+						<tbody>
+							<tr ng-repeat="order in adminCtrl.orders">
+								<td>{{ order.id }}</td>
+								<td>{{ order.book.name }}</td>
+								<td>{{ order.user.name }}</td>
+								<td>{{ order.created_at }}</td>								
+							</tr>
+						</tbody>						
+					</table>
+				</div>
+				<div class="panel-footer">
+					<div class='text-right'>
+						<a ui-sref="root.admin-dashboard-orders">
+							View all						
+							<i class="fa fa-arrow-circle-o-right"></i>						
+						</a>
+					</div>					
+				</div>
+			</div>		
+		</div>
+	</div>
+</div>

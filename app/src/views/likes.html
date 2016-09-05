@@ -1,0 +1,52 @@
+<h1 class='page-header'>
+	Likes
+	<span class='badge'>
+		{{adminCtrl.likes.length}}
+	</span>
+</h1>
+
+<table class='table table-bordered table-striped' st-table="likes" 
+	st-safe-src="adminCtrl.likes">
+	<thead>
+		<tr class='bold'>			
+			<td st-sort="book_name">Book Name</td>
+			<td st-sort="user_name">User Name</td>
+			<td st-sort="rating">Rating</td>			
+		</tr>
+		<tr>
+			<td>
+				<input type='text' class='form-control' st-search='book_name'  tooltip
+				title="Search by book name..." placeholder="Search by book name..." />
+			</td>		
+			<td>
+				<input type='text' class='form-control' st-search='userr_name' tooltip			
+					title="Search by user name..." placeholder="Search by user name..." />
+			</td>
+			<td></td>			
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="like in likes">			
+			<td>
+				<a ui-sref="root.book-show({slug: like.book_slug})">
+					{{ like.book_name }}
+				</a>
+			</td>
+			<td>
+				<a ui-sref="root.user-show({slug: like.user_slug})">
+					{{ like.user_name }}
+				</a>
+			</td>
+			<td>
+				{{ like.rating }}
+			</td>			
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="3" class="text-center">
+				<div st-pagination st-items-by-page="10"></div>
+			</td>
+		</tr>
+	</tfoot>
+</table>

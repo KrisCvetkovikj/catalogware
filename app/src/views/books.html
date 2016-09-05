@@ -1,0 +1,102 @@
+<h1 class='page-header'>
+	Books
+	<span class='badge'>
+		{{adminCtrl.books.length}}
+	</span>
+</h1>
+
+<table class='table table-bordered table-striped' st-table="books" 
+	st-safe-src="adminCtrl.books">
+	<thead>
+		<tr class='bold'>
+			<td class='col-xs-1' st-sort="id">Book ID</td>
+			<td class='col-xs-4' st-sort="name">Book Name</td>
+			<td class='col-xs-1' st-sort="price">Price</td>			
+			<td class='col-xs-1' st-sort="promotion.end">Promotion</td>
+			<td class='col-xs-2'>
+				Book Image
+			</td>
+			<td class='col-xs-2'></td>
+		</tr>
+		<tr>
+			<td>
+				<input type='text' class='form-control' st-search='id'  tooltip
+				title="Search by book id..." placeholder="Search by book id..." />
+			</td>		
+			<td>
+				<input type='text' class='form-control' st-search='name' tooltip			
+					title="Search by book name..." placeholder="Search by book name..." />
+			</td>
+			<td>
+				<input type='text' class='form-control' st-search='price' tooltip
+					title="Search by book price..." placeholder="Search by book price..." />
+			</td>
+			<td colspan="3"></td>			
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="book in books">
+			<td>{{book.id}}</td>
+			<td>
+				<a ui-sref="root.book-show({slug: book.slug})">
+					{{ book.name }}
+				</a>
+			</td>
+			<td>
+				{{ book.price | currency }}
+			</td>
+			<td>
+				<span class='text-danger' ng-if="!book.promotion">
+					None
+				</span>
+				<span class='text-success' title="Promotion end" tooltip 
+					ng-if="book.promotion">
+					Yes, ends in 
+					{{ book.promotion.end | amTimeAgo }}
+				</span>
+			</td>
+			<td>
+				<img class='img-responsive' ng-src="/{{book.image_path}}" />
+			</td>
+			<td class='text-center'>
+				<div class='btn-group'>
+					<button class='btn btn-primary' tooltip title="Edit book" 
+						ng-if="adminCtrl.canChange(book)" 
+						ng-click="adminCtrl.showUpdateDialog(book)">
+						<i class='fa fa-pencil-square-o '></i>
+					</button>
+
+					<button class='btn btn-danger' tooltip title="Delete book" 
+						ng-if="adminCtrl.canChange(book)" ng-click="adminCtrl.delete(book)">
+						<i class='fa fa-remove'></i>
+					</button>
+
+					<button class='btn btn-success' tooltip title="Add on promotion" 
+						ng-if="adminCtrl.canChange(book) && !book.promotion" 
+						ng-click="adminCtrl.showAddPromotionDialog(book)">
+						<i class='fa fa-plus-circle'></i>
+					</button>
+
+					<button class='btn btn-success' tooltip title="Update promotion" 
+						ng-if="adminCtrl.canChange(book) && book.promotion" 
+						ng-click="adminCtrl.showUpdatePromotionDialog(book)">
+						<i class='fa fa-plus-circle'></i>
+					</button>
+
+					<button class='btn btn-danger' tooltip title="Remove promotion" 
+						ng-if="adminCtrl.canChange(book) && book.promotion" 
+						ng-click="adminCtrl.deletePromotion(book)">
+						<i class='fa fa-trash'></i>
+					</button>
+				</div>				
+			</td>			
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="6" class="text-center">
+				<div st-pagination st-items-by-page="10"></div>
+			</td>
+		</tr>
+	</tfoot>
+</table>

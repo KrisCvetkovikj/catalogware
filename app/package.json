@@ -12,7 +12,7 @@
     "gulp",
     "bower"
   ],
-  "author": "Borce Petrovski, Kristijan Cvetkovic",
+  "author": "Borche Petrovski, Kristijan Cvetkovikj",
   "license": "ISC",
   "devDependencies": {
     "bower": "^1.7.9",

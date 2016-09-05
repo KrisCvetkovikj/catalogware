@@ -1,0 +1,45 @@
+<table class='table table-striped' st-table="likes" st-safe-src="userBookCtrl.books">
+	<thead>
+		<tr>
+			<td st-sort="name">
+				<b>Book name</b>
+			</td>
+			<td st-sort="price">
+				<b>Book price</b>
+			</td>
+			<td st-sort="pivot.rating">
+				<b>Your rating</b>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type='text' class='form-control' st-search='name' 
+				placeholder="Search by name..." />
+			</td>
+			<td></td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="like in likes">
+			<td>
+				<a ui-sref="root.book-show({slug: like.slug})">
+					{{ like.name }}
+				</a>
+			</td>
+			<td>
+				{{ like.price }}
+			</td>
+			<td>
+				{{ like.pivot.rating }}
+			</td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="3" class="text-center">
+				<div st-pagination st-items-by-page="10"></div>
+			</td>
+		</tr>
+	</tfoot>
+</table>

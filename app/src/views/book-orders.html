@@ -1,0 +1,61 @@
+<table class='table table-striped' st-table="orders" st-safe-src="userBookCtrl.books">
+	<thead>
+		<tr>
+			<td st-sort="book.name">
+				<b>Book name</b>
+			</td>
+			<td st-sort="book.price">
+				<b>Book price</b>
+			</td>
+			<td st-sort="created_at">
+				<b>Order date</b>
+			</td>
+			<td st-sort="address">
+				<b>Shipping Address</b>
+			</td>
+			<td st-sort="ordered">
+				<b>Ordered</b>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type='text' class='form-control' st-search='book.name' 
+					placeholder="Search by name..." />
+			</td>
+			<td colspan="2"></td>
+			<td>
+				<input type='text' class='form-control' st-search='address' 
+					placeholder="Search by shipping address..." />
+			</td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="order in orders">
+			<td>
+				<a ui-sref="root.book-show({slug: order.book.slug})">
+					{{ order.book.name }}
+				</a>
+			</td>
+			<td>
+				{{ order.book.price }}
+			</td>
+			<td>
+				{{ order.created_at }}
+			</td>
+			<td>
+				{{ order.address }}
+			</td>
+			<td>
+				{{ order.ordered }}
+			</td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="3" class="text-center">
+				<div st-pagination st-items-by-page="10"></div>
+			</td>
+		</tr>
+	</tfoot>
+</table>
