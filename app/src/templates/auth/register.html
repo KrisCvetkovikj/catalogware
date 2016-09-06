@@ -1,0 +1,118 @@
+<list-errors errors="registerCtrl.errors"></list-errors>
+
+<form name="registerCtrl.form" novalidate class='form-horizontal'
+	ng-submit="registerCtrl.form.$valid && registerCtrl.register()">
+	
+	<!-- Name -->
+	<div class='form-group has-feedback' ng-class="{'has-error': registerCtrl.nameError(),
+		'has-success': registerCtrl.nameOk()}">
+		<label for="name" class='control-label col-sm-2'>Name:</label>
+		<div class='col-sm-10'>
+			<input type="text" class='form-control' id="name" name="name" 
+				ng-model="registerCtrl.credentials.name" required 
+				ng-model-options="{updateOn: 'blur'}" />
+			<!-- Icons -->
+			<i class='fa fa-remove form-control-feedback' 
+				ng-if="registerCtrl.nameError()"></i>
+			<i class='fa fa-check form-control-feedback' 
+				ng-if="registerCtrl.nameOk()"></i>
+		</div>
+		<!-- Errors -->
+		<div class='col-sm-10 col-sm-offset-2' ng-if="registerCtrl.nameError()"
+			ng-messages="registerCtrl.form.name.$error">
+			<strong class='text-danger' ng-message="required">
+				The name field is required
+			</strong>
+		</div>
+	</div>
+
+	<!-- Email -->
+	<div class='form-group has-feedback' ng-class="{'has-error': registerCtrl.emailError(),
+		'has-success': registerCtrl.emailOk()}">
+		<label for="email" class='control-label col-sm-2'>Email:</label>
+		<div class='col-sm-10'>
+			<input type="email" class='form-control' id="email" name="email" 
+				ng-model="registerCtrl.credentials.email" required 
+				ng-model-options="{updateOn: 'blur'}" />
+			<!-- Icons -->
+			<i class='fa fa-remove form-control-feedback' 
+				ng-if="registerCtrl.emailError()"></i>
+			<i class='fa fa-check form-control-feedback' 
+				ng-if="registerCtrl.emailOk()"></i>
+		</div>
+		<!-- Errors -->
+		<div class='col-sm-10 col-sm-offset-2' ng-if="registerCtrl.emailError()"
+			ng-messages="registerCtrl.form.email.$error">
+			<strong class='text-danger' ng-message="required">
+				The email field is required
+			</strong>
+			<strong class='text-danger' ng-message="email">
+				The email field is not valid
+			</strong>
+		</div>
+	</div>
+
+	<!-- Password -->
+	<div class='form-group has-feedback' ng-class="{'has-error': registerCtrl.passwordError(),
+		'has-success': registerCtrl.passwordOk()}">
+		<label for="password" class='control-label col-sm-2'>Password:</label>
+		<div class='col-sm-10'>
+			<input type="password" class='form-control' id="password" name="password" 
+				ng-model="registerCtrl.credentials.password" required ng-minlength="6"
+				ng-model-options="{updateOn: 'blur'}" />
+			<!-- Icons -->
+			<i class='fa fa-remove form-control-feedback' 
+				ng-if="registerCtrl.passwordError()"></i>
+			<i class='fa fa-check form-control-feedback' 
+				ng-if="registerCtrl.passwordOk()"></i>
+		</div>
+		<!-- Errors -->
+		<div class='col-sm-10 col-sm-offset-2' ng-if="registerCtrl.passwordError()"
+			ng-messages="registerCtrl.form.password.$error">
+			<strong class='text-danger' ng-message="required">
+				The password field is required
+			</strong>			
+			<strong class='text-danger' ng-message="minlength">
+				The password must be at least 6 characters
+			</strong>
+		</div>
+	</div>
+
+	<!-- Confirm Password -->
+	<div class='form-group has-feedback' ng-class="{'has-error': registerCtrl.confirmPassError(),
+		'has-success': registerCtrl.confirmPassOk()}">
+		<label for="confirm-pass" class='control-label col-sm-2'>Confirm Password:</label>
+		<div class='col-sm-10'>
+			<input type="password" class='form-control' id="confirm-pass" name="confirmPass" 
+				ng-model="registerCtrl.credentials.repeatPassword" required
+				ng-model-options="{updateOn: 'blur'}" 
+				match="registerCtrl.credentials.password" />
+			<!-- Icons -->
+			<i class='fa fa-remove form-control-feedback' 
+				ng-if="registerCtrl.confirmPassError()"></i>
+			<i class='fa fa-check form-control-feedback' 
+				ng-if="registerCtrl.confirmPassOk()"></i>
+		</div>
+		<!-- Errors -->
+		<div class='col-sm-10 col-sm-offset-2' ng-if="registerCtrl.confirmPassError()"
+			ng-messages="registerCtrl.form.confirmPass.$error">
+			<strong class='text-danger' ng-message="required">
+				The confirm password field is required
+			</strong>			
+			<strong class='text-danger' ng-message="match">
+				The passwords don't match
+			</strong>
+		</div>
+	</div>
+
+	<div class='row'>
+		<div class='col-sm-4 col-sm-offset-2 col-xs-8'>
+			<button class='btn btn-primary btn-block'>
+				<i class='fa fa-paper-plane'></i>
+				Register
+			</button>
+		</div>
+		<i class='fa fa-spinner fa-spin fa-2x' ng-if="registerCtrl.sending" no-animate></i>
+	</div>
+
+</form>

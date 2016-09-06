@@ -11,6 +11,7 @@ var app = angular.module('app', [
 	'ngSanitize',
 	'xeditable',
 	'smart-table',	
+	'satellizer',
 
 	'app.controller',
 	'app.service',

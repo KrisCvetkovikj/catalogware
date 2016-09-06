@@ -1,0 +1,89 @@
+body {
+	padding-top: 70px;
+	padding-bottom: 30px;
+}
+
+.nav .open > a, 
+.nav .open > a:hover, 
+.nav .open > a:focus {
+	background-color: transparent;	
+}
+
+.navbar-blue .dropdown a {
+	cursor: pointer;
+}
+
+.navbar-blue {
+	background-color: #337ab7;
+	border-color: #2e6da4; 		
+}
+
+.navbar-blue a {
+	position: relative;
+	color: #cdddeb;
+}
+
+.navbar-blue li.active a {
+	color: white;
+}
+
+.navbar-blue li.active a:after {
+	position: absolute;
+	left: 41%;
+	bottom: -1px;
+	content: " ";
+	border-right: 7px solid transparent;
+	border-bottom: 7px solid;
+	border-left: 7px solid transparent;
+}
+
+.navbar-blue a:hover, 
+.navbar-blue a:focus {
+	color: white;		
+}
+
+.navbar-blue .nav > li > a:hover,
+.navbar-blue .nav > li > a:focus {
+	background-color: transparent;
+}
+
+.navbar-blue .navbar-toggle .icon-bar {
+	background-color: white;
+}
+
+@media(max-width: 768px) {
+	.navbar-blue li.active a:after {
+		border: 0;
+	}
+
+	.navbar-blue li.dropdown ul.dropdown-menu li > a {
+		color: #cdddeb;
+	}
+
+	.navbar-blue li.dropdown ul.dropdown-menu li > a:hover,
+	.navbar-blue li.dropdown ul.dropdown-menu li > a:focus {
+		background-color: transparent;
+		color: white;
+	}
+
+	.navbar-blue .navbar-btn {
+		margin-left: 15px;
+	}
+}
+
+a[ng-click] {
+	cursor: pointer;
+}
+
+#loading-bar .bar {	
+	background-color: #cdddeb;
+}
+
+#loading-bar .peg {
+	-moz-box-shadow: white 1px 0 6px 1px;
+	-ms-box-shadow: white 1px 0 6px 1px;
+	-webkit-box-shadow: white 1px 0 6px 1px;
+	box-shadow: white 1px 0 6px 1px;
+	opacity: 1;
+	height: 3px;	
+}

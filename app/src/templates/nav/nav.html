@@ -1,0 +1,55 @@
+<nav class="navbar navbar-blue navbar-fixed-top">
+	<div class='container'>
+		<div class='navbar-header'>
+			<a ui-sref="root" class='navbar-brand'>Catelogware</a>
+		</div>		
+
+		<ul class='nav navbar-nav navbar-right'>
+			<li ng-if="navCtrl.user.isAdmin()">
+				<a>
+					<i class='fa fa-plus-circle'></i>
+					Add a new product
+				</a>
+			</li>
+			<li ng-if="navCtrl.user.isAdmin()">
+				<a>
+					<i class='fa fa-dashboard'></i>
+					Dashboard
+				</a>
+			</li>
+			<li ng-if="navCtrl.user.isAuthenticated" class='dropdown'>
+				<a class='dropdown-toggle' data-toggle='dropdown'>
+					<i class='fa fa-user'></i>
+					{{ navCtrl.user.name }}
+					<span class='caret'></span>
+				</a>
+				<ul class="dropdown-menu">                        
+					<li ng-if="!navCtrl.user.isAdmin()">
+						<a>
+							<i class='fa fa-user'></i>
+							Orders
+						</a>
+					</li>
+					<li>
+						<a ng-click="navCtrl.logout()">
+							<i class='fa fa-sign-out'></i>
+							Logout
+						</a>
+					</li>
+				</ul>
+			</li>						
+			<li ng-if="!navCtrl.user.isAuthenticated">
+				<a ng-click="navCtrl.showLoginDialog()">
+					<i class='fa fa-sign-in'></i>
+					Login
+				</a>
+			</li>
+			<li ng-if="!navCtrl.user.isAuthenticated">
+				<a ng-click="navCtrl.showRegisterDialog()">
+					<i class='fa fa-user'></i>
+					Register
+				</a>
+			</li>       
+		</ul>
+	</div>
+</nav>
