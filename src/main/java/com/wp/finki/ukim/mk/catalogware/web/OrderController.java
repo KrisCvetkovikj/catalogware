@@ -3,9 +3,11 @@ package com.wp.finki.ukim.mk.catalogware.web;
 import com.wp.finki.ukim.mk.catalogware.exception.ResourceNotFoundException;
 import com.wp.finki.ukim.mk.catalogware.model.Order;
 import com.wp.finki.ukim.mk.catalogware.model.Product;
+import com.wp.finki.ukim.mk.catalogware.model.security.AuthUser;
 import com.wp.finki.ukim.mk.catalogware.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

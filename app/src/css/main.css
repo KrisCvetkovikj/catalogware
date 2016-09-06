@@ -3,6 +3,159 @@ body {
 	padding-bottom: 30px;
 }
 
+body * {
+	outline: none!important;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.img-inline {
+	display: inline-block;
+}
+
+.animate.ng-enter, 
+.animate.ng-leave {
+	-webkit-transition: 0.5s ease all;
+	-moz-transition: 0.5s ease all;
+	-ms-transition: 0.5s ease all;
+	-o-transition: 0.5s ease all;	
+	transition: 0.5s ease all;
+}
+
+.animate.ng-leave.animate.ng-leave-active,
+.animate.ng-enter {
+	opacity: 0;	
+}
+
+.animate.ng-enter.ng-enter-active, 
+.animate.ng-leave {
+	opacity: 1;		
+}
+
+.datepicker.dropdown-menu {
+  width: 250px;
+  height: 250px;
+}
+.datepicker.dropdown-menu button {
+  outline: none;
+  border: 0px;
+}
+.datepicker.dropdown-menu tbody {
+  height: 180px;
+}
+.datepicker.dropdown-menu tbody button {
+  padding: 6px;
+}
+.datepicker.dropdown-menu.datepicker-mode-1 tbody button,
+.datepicker.dropdown-menu.datepicker-mode-2 tbody button {
+  height: 65px;
+}
+.timepicker.dropdown-menu {
+  padding: 0 4px;
+}
+.timepicker.dropdown-menu button {
+  outline: none;
+  border: 0px;
+}
+.timepicker.dropdown-menu tbody button {
+  padding: 6px;
+}
+
+a[ng-click], 
+a[data-target] {
+	cursor: pointer;
+}
+
+.st-sort-ascent:before{
+	content: '\25B2';
+}
+
+.st-sort-descent:before{
+	content: '\25BC';
+}
+
+td[st-sort] {
+	cursor: pointer;
+}
+
+.text-warning {
+	color: #f0ad4e;
+}
+
+.text-success {
+	color: #5cb85c;
+}
+
+.panel-success > .panel-heading {
+    background-color: #5cb85c;
+    color: #ffffff;
+}
+
+.panel-success > .panel-footer > a {
+    color: #5cb85c;
+}
+
+.panel-success > .panel-footer > a:hover,
+.panel-success > .panel-footer > a:focus {
+    color: #3d8b3d;
+}
+
+.panel-warning {
+    border-color: #eea236;
+}
+
+.panel-warning > .panel-heading {
+    background-color: #f0ad4e;
+    color: #ffffff;
+}
+
+.panel-warning > .panel-footer > a {
+    color: #f0ad4e;
+}
+
+.panel-warning > .panel-footer > a:hover,
+.panel-warning > .panel-footer > a:focus {
+    color: #ec971f;
+}
+
+.panel-info {
+	border-color: #46b8da;
+}
+
+.panel-info > .panel-heading {
+    color: #fff;
+  	background-color: #5bc0de;
+}
+
+.panel-info > .panel-footer > a {
+    color: #5bc0de;
+}
+
+.panel-info > .panel-footer > a:hover,
+.panel-info > .panel-footer > a:focus {
+    color: #31b0d5;
+}
+
+.panel-danger {
+    border-color: #d43f3a;
+}
+
+.panel-danger > .panel-heading {
+    background-color: #d9534f;
+    color: #ffffff;
+}
+
+.panel-danger > .panel-footer > a {
+    color: #d9534f;
+}
+
+.panel-danger > .panel-footer > a:hover,
+.panel-danger > .panel-footer > a:focus {
+    color: #c9302c;
+}
+
 .nav .open > a, 
 .nav .open > a:hover, 
 .nav .open > a:focus {
@@ -71,10 +224,6 @@ body {
 	}
 }
 
-a[ng-click] {
-	cursor: pointer;
-}
-
 #loading-bar .bar {	
 	background-color: #cdddeb;
 }
@@ -86,4 +235,78 @@ a[ng-click] {
 	box-shadow: white 1px 0 6px 1px;
 	opacity: 1;
 	height: 3px;	
+}
+
+@media(min-width: 768px) {
+	.product {
+		height: 200px;		
+	}
+}
+
+.product {
+	margin-bottom: 20px;
+}
+
+.product .product-price {
+	margin-left: 5px;
+}
+
+
+
+.book-btn-group {
+	margin-top: 20px;
+}
+
+.btn-like {
+	white-space: normal;
+}
+
+.btn-like > .popover-content {
+	display: none;	
+}
+
+.book-btn-group .popover-content {
+	color: #d17581;	
+	text-align: center;
+}
+
+i[star] {
+	font-size: 20px;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+.product-rating {
+	color: #d17581;
+}
+
+.product-rating > i {
+	margin-right: 5px;
+}
+
+.product-show .product-info {
+	margin-top: 50px;
+}
+
+.product-show .product-img {
+	width: 100%;
+}
+
+.category {
+	margin-right: 15px;
+}
+
+
+
+
+.user-books-content {
+	margin-top: 30px;
+}
+
+.dashboard .book-info-panel {
+	margin-top: 20px;
+}
+
+.about {
+	margin-top: 30px;
 }

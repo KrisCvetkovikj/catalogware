@@ -11,6 +11,7 @@ import com.wp.finki.ukim.mk.catalogware.service.ProductLikeService;
 import com.wp.finki.ukim.mk.catalogware.service.ProductService;
 import com.wp.finki.ukim.mk.catalogware.utils.ValidationErrorsMessageConverter;
 import com.wp.finki.ukim.mk.catalogware.validator.ProductRequestValidator;
+import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,6 +148,19 @@ public class ProductController extends BaseController {
         return likeService.getProductLikes(id);
     }
 
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    @GetMapping(value = "/{id}/likes/me")
+    public Map<String, Short> getAuthUserLike(@PathVariable long id, @AuthenticationPrincipal AuthUser user) {
+        ProductLike like = likeService.get(user.getId(), id);
+        Map<String, Short> map = new HashMap<>();
+        if (like != null) {
+            map.put("rating", like.getRating());
+        } else {
+            map.put("rating", null);
+        }
+        return map;
+    }
+
     @PreAuthorize("hasAuthority('CUSTOMER') and !@productLikeService.exists(#authUser.id, #id)")
     @PostMapping("/{id}/likes")
     @ResponseStatus(HttpStatus.CREATED)
@@ -173,6 +187,14 @@ public class ProductController extends BaseController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteLike(@PathVariable long id, @AuthenticationPrincipal AuthUser authUser) {
         likeService.delete(authUser.getId(), id);
+    }
+
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    @GetMapping("/{id}/baskets/me")
+    public Map<String, Boolean> getBasket(@PathVariable long id, @AuthenticationPrincipal AuthUser authUser) {
+        Map<String, Boolean> result = new HashMap<>();
+        result.put("inBasket", basketService.hasProduct(authUser.getId(), id));
+        return result;
     }
 
     @PreAuthorize("hasAuthority('CUSTOMER') and !@basketService.hasProduct(#authUser.id, #id)")

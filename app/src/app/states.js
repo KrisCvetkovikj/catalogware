@@ -9,21 +9,71 @@
 app.config([
     '$stateProvider',
     '$urlRouterProvider',
-    function($stateProvider, $urlRouterProvider) {
+    '$authProvider',
+    function($stateProvider, $urlRouterProvider, $authProvider) {
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/home');
+        $authProvider.loginUrl = '/api/auth/login';
+        $authProvider.signupUrl = '/api/auth/register';
 
-        $stateProvider.state('root', {
-            url: '/',
-            views: {
-                nav: {
-                    templateUrl: 'src/views/nav.html'
+        $stateProvider
+            .state('root', {
+                url: '/',
+                views: {
+                    nav: {
+                        templateUrl: 'src/views/nav/nav.html',
+                        controller: 'NavController',
+                        controllerAs: 'navCtrl'
+                    },
+                    main: {
+                        templateUrl: 'src/views/main.html'
+                    }
                 },
-                main: {
-                    templateUrl: 'src/views/main.html'
+                resolve: {
+                    auth: function(AuthResolver) {
+                        return AuthResolver.resolve();
+                    }
                 }
-            }
-        });
+            })
+            .state('root.home', {
+                url: 'home',
+                views: {
+                    'content@root': {
+                        templateUrl: 'src/views/home.html',
+                        controller: 'HomeController',
+                        controllerAs: 'homeCtrl'
+                    }
+                },
+                resolve: {
+                    categories: function(Category) {
+                        return Category.query();
+                    },
+                    products: function(Product, PRODUCTS) {
+                        return Product.query({latest: PRODUCTS.latest, size: PRODUCTS.size});
+                    }
+                }      
+            })
+            .state('root.product-details', {
+                url: 'products/:id',
+                views: {
+                    'content@root': {
+                        templateUrl: 'src/views/products/show.html',
+                        controller: 'ProductDetailsController',
+                        controllerAs: 'productCtrl'
+                    }
+                },
+                resolve: {
+                    product: function(Product, $stateParams) {
+                        return Product.get({id: $stateParams.id});
+                    },
+                    authUserLike: function(Product, $stateParams) {
+                        return Product.authUserLike({id: $stateParams.id});
+                    },
+                    authUserBasket: function(Product, $stateParams) {
+                        return Product.authUserBasket({id: $stateParams.id});
+                    }
+                }
+            });
 
         $stateProvider.state('root.about', {
             url: 'about',
@@ -96,16 +146,7 @@ app.config([
                     templateUrl: "src/views/form.html"
                 }
             }
-        });
-
-        $stateProvider.state('root.home', {
-            url: 'home',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/home.html"
-                }
-            }
-        });
+        });        
 
         $stateProvider.state('root.like-stars', {
             url: 'like-stars',

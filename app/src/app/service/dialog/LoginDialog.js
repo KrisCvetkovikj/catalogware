@@ -5,7 +5,7 @@ function LoginDialog(Modal) {
 	var modal = null;
 
 	this.show = function() {
-		modal = Modal.create('Login', 'src/templates/auth/login.html', 'LoginController', 'loginCtrl');
+		modal = Modal.create('Login', 'src/views/auth/login.html', 'LoginController', 'loginCtrl');
 	}
 
 	this.hide = function() {

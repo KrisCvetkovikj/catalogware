@@ -159,4 +159,13 @@ public class ProductLikeServiceImpl implements ProductLikeService {
         }
         return product.getLikes();
     }
+
+    @Override
+    public Set<ProductLike> getUserLikes(Long userId) {
+        User user = userService.get(userId);
+        if (user == null) {
+            throw new UserNotFoundException(String.format("can't find user with id %d", userId));
+        }
+        return user.getLikes();
+    }
 }

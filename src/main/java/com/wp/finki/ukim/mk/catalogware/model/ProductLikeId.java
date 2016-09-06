@@ -16,8 +16,7 @@ public class ProductLikeId implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private User user;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Product product;
 
     public ProductLikeId() {

@@ -1,0 +1,91 @@
+<div class='row product-show'>
+	<div class='col-sm-9 col-sm-offset-1'>
+		<h1 class='page-header'>
+			{{ productCtrl.product.name }}
+		</h1>
+		<div class='row'>
+			<div class='col-sm-4'>
+				<img class='img-thumbnail product-img' 
+					ng-src="/api/products/{{productCtrl.product.id}}/image" />
+
+				<!-- Book buttons -->
+				<div class='book-btn-group text-center' ng-if="productCtrl.canSee()">
+				<!-- Like button -->												
+					<button class='btn btn-primary btn-like text-center' star-popover tooltip 
+						title="Like this product" rating="productCtrl.rating" ng-if="!productCtrl.hasLiked()"
+						popover-title="Add like" rate="productCtrl.addLike(rating)">
+						<i class='fa fa-thumbs-up'></i>						
+					</button>					
+					<!-- Update like button -->
+					<button class='btn btn-primary btn-like text-center'star-popover tooltip 
+						title="Change your like rating" rating="productCtrl.rating" 
+						ng-if="productCtrl.hasLiked()" popover-title="Update like" ng-if="productCtrl.hasLiked()"
+						rate="productCtrl.updateLike(rating)">
+						<i class='fa fa-thumbs-up'></i>						
+					</button>					
+					<!-- Remove like button -->
+					<button class='btn btn-danger btn-like text-center' title="Remove like" tooltip
+						ng-if="productCtrl.hasLiked()" ng-click="productCtrl.removeLike()">						
+						<i class='fa fa-thumbs-down'></i>						
+					</button>										
+					<!-- Order button -->
+					<button class='btn btn-success text-center' title="Add to basket" tooltip 
+						ng-click="productCtrl.addToBasket()" ng-if="!productCtrl.inBasket()">
+						<i class='fa fa-shopping-cart'></i>
+					</button>
+					<button class='btn btn-danger text-center' title="Remove from basket" tooltip 
+						ng-click="productCtrl.removeFromBasket()" ng-if="productCtrl.inBasket()">
+						<i class='fa fa-times'></i>
+					</button>
+				</div>				
+			</div>
+			<div class='col-sm-8 product-content'>
+				<p>
+					{{ productCtrl.product.description }}
+				</p>
+				<table class='table table-hover table-striped product-info'>
+					<tbody>						
+						<tr>
+							<td>
+								<b>Price</b>
+							</td>
+							<td class='text-warning'>
+								{{ productCtrl.product.price | currency }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>Added</b>
+							</td>
+							<td class='text-info'>
+								<span am-time-ago="productCtrl.product.updatedAt"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>Categories</b>
+							</td>
+							<td>
+								<span class='label label-primary category' 
+									ng-repeat="category in productCtrl.product.categories">
+									{{ category.name }}
+								</span>
+							</td>
+						</tr>						
+						<tr ng-if="productCtrl.canSee() && productCtrl.hasLiked()">
+							<td>
+								<b>Your rating</b>
+							</td>
+							<td class='product-rating'>
+								<i class='fa' ng-repeat="i in [1,2,3,4,5]" 
+									ng-class="{'fa-star': i <= productCtrl.authUserLike.rating, 
+									'fa-star-o': i > productCtrl.authUserLike.rating}">
+								</i>								
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

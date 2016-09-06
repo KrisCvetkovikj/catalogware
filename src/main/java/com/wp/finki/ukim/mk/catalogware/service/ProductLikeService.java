@@ -39,4 +39,6 @@ public interface ProductLikeService {
     void delete(long userId, long productId);
 
     Set<ProductLike> getProductLikes(long productId);
+
+    Set<ProductLike> getUserLikes(Long userId);
 }

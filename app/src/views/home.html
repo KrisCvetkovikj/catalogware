@@ -1,13 +1,46 @@
-<div class='book-top'>
-	<h3 class='page-header'>
-		Top Books
-	</h3>
-	<top-books books="homeCtrl.top" limit="homeCtrl.topLimit"></top-books>		
-</div>
+<div class='row'>
+	<div class='col-sm-2'>
+		<h5 class='bold'>
+			Filter by category
+		</h5>
+		<div class='list-group side-categories'>
+			<a class='list-group-item' 
+				ng-repeat="category in homeCtrl.categories track by category.id"
+				ng-click="homeCtrl.filter(category)" 
+				ng-class="{'active': category.selected, 'disabled': homeCtrl.loading}">
+				{{ category.name }}
+			</a>			
+		</div>
+	</div>
+	<div class='col-sm-10'>
+		<div class='row'>
+			<div class='col-sm-6 product animate' ng-repeat="product in homeCtrl.products track by product.id">
+				<div class='row'>				
+					<div class='col-sm-4'>
+						<img class='img-thumbnail' ng-src="/api/products/{{product.id}}/image" />
+					</div>
+					<div class='col-sm-6'>
+						<h4 class='pull-right text-warning product-price'>
+							{{ product.price | currency }}
+						</h4>
+						<h4 class='book-name'>
+							<a ui-sref="root.product-details({id: product.id})">
+								{{ product.name }}
+							</a>					
+						</h4>
+						<p>
+							{{ product.description | limitTo:100 }}
+							<a>... Read More</a>
+						</p>						
+					</div>
+				</div>			
+			</div>
+		</div>
 
-<div class='book-recent'>
-	<h3 class='page-header'>
-		Most Recent Books
-	</h3>
-	<index-books books="homeCtrl.latest"></index-books>		
-</div>	
+		<button class='btn btn-primary btn-lg btn-block' ng-click="homeCtrl.loadMore()"
+			ng-class="{'disabled': homeCtrl.loading}" ng-if="!homeCtrl.done">
+			Load More
+			<i class='fa fa-spinner fa-spin' ng-if="homeCtrl.loading" no-animate></i>
+		</button>
+	</div>
+</div>

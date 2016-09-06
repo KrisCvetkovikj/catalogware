@@ -15,3 +15,8 @@ app.constant('EVENTS', {
 	logoutSuccess: 'event-logout-success',
 	registerSuccess: 'event-register-success',	
 });
+
+app.constant('PRODUCTS', {
+	size: 20,
+	latest: true
+});
