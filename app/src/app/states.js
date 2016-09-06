@@ -73,7 +73,56 @@ app.config([
                         return Product.authUserBasket({id: $stateParams.id});
                     }
                 }
-            });
+            })
+            .state('root.user-likes', {
+                url: 'users/me/likes',
+                views: {
+                    'content@root': {
+                        templateUrl: 'src/views/users/likes.html',
+                        controller: function(likes) {
+                            this.likes = likes;
+                        },
+                        controllerAs: 'userCtrl'
+                    }
+                },
+                resolve: {
+                    likes: function(User) {
+                        return User.authUserLikes();
+                    }
+                }
+            })
+            .state('root.user-orders', {
+                url: 'users/me/orders',
+                views: {
+                    'content@root': {
+                        templateUrl: 'src/views/users/orders.html',
+                        controller: 'OrdersController',
+                        controllerAs: 'userCtrl'
+                    }
+                },
+                resolve: {
+                    orders: function(User) {
+                        return User.authUserOrders();
+                    }
+                }
+            })
+            .state('root.user-basket', {
+                url: 'users/me/basket',
+                views: {
+                    'content@root': {
+                        templateUrl: 'src/views/users/basket.html',
+                        controller: 'BasketController',
+                        controllerAs: 'basketCtrl'
+                    }
+                },
+                resolve: {
+                    basket: function(Basket) {
+                        return Basket.get();
+                    }
+                }
+            })            
+
+
 
         $stateProvider.state('root.about', {
             url: 'about',

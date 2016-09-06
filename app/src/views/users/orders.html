@@ -1,0 +1,63 @@
+<table class='table table-striped' st-table="orders" st-safe-src="userCtrl.orders">
+	<thead>
+		<tr>
+			<td st-sort="id">
+				<b>Order ID</b>
+			</td>
+			<td st-sort="shippingAddress">
+				<b>Shipping Address</b>
+			</td>
+			<td st-sort="createdAt">
+				<b>Craated At</b>
+			</td>
+			<td st-sort="updatedAt">
+				<b>Updated At</b>
+			</td>
+			<td st-sort="finished">
+				<b>Finished</b>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<input type='text' class='form-control' st-search='id' placeholder="ID..." />
+			</td>
+			<td>
+				<input type='text' class='form-control' st-search='shippingAddress' placeholder="Address..." />
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="order in orders">
+			<td>
+				{{ order.id }}
+			</td>
+			<td>
+				{{ order.shippingAddress }}
+			</td>
+			<td>
+				<span am-time-ago="order.createdAt"></span>
+			</td>
+			<td>
+				<span am-time-ago="order.updatedAt"></span>
+			</td>
+			<td>{{ order.finished }}</td>
+			<td>
+				<button class='btn btn-primary btn-sm' tooltip title="View products">
+					<i class='fa fa-eye'></i>
+				</button>
+			</td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="3" class="text-center">
+				<div st-pagination st-items-by-page="10"></div>
+			</td>
+		</tr>
+	</tfoot>
+</table>

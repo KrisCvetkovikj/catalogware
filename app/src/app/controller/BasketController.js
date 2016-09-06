@@ -1,0 +1,56 @@
+
+controller.controller('BasketController', BasketController);
+
+function BasketController($scope, $state, basket, Product, Basket, AddressDialog, toastr, EVENTS) {
+
+	var _this = this;
+	this.basket = basket;
+	var selectedProduct = null;
+
+	this.isEmpty = function() {
+		return this.basket.products.length == 0;
+	}
+
+	this.total = function() {
+		var sum = 0;
+		basket.products.forEach(function(product) {
+			sum += product.price;
+		});
+		return sum;
+	}
+
+	this.removeProduct = function(product) {
+		selectedProduct = product;
+		Product.removeFromBasket({id: product.id}, {}, 
+			removeProductSuccessCallback, removeProductFailedCallback);
+	}
+
+	var removeProductSuccessCallback = function() {
+		var index = _this.basket.products.indexOf(selectedProduct);
+		if (index != -1) {
+			_this.basket.products.splice(index, 1);
+		}		
+		toastr.success("The product has been removed from the basket", "Product removed");
+	}
+
+	var removeProductFailedCallback = function() {
+		toastr.error("Error occurred while removing the product.", "Error");
+	}
+
+	this.checkout = function() {
+		AddressDialog.show();		
+	}
+
+	var unwatchBasketCheckout = $scope.$on(EVENTS.basketCheckoutSuccess, function(event, data) {
+		_this.basket.products = [];
+	});
+
+	var unwatchLogout = $scope.$on(EVENTS.logoutSuccess, function(event, data) {
+		$state.go('root.home');
+	});
+
+	$scope.$on('$destroy', function() {
+		unwatchBasketCheckout();
+		unwatchLogout();
+	});
+}

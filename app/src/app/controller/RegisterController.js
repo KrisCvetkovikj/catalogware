@@ -10,6 +10,7 @@ function RegisterController($rootScope, toastr, ErrorUtils, AuthService, Registe
 	this.register = function() {
 		if (!this.sending) {
 			this.sending = true;
+			this.errors = [];
 			AuthService.register(this.credentials).then(registerSuccessCallback, registerFailedCallback);
 		}
 	}

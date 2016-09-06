@@ -13,7 +13,9 @@ app.constant('EVENTS', {
 	loginSuccess: 'event-login-success',
 	authChecked: 'event-auth-checked',
 	logoutSuccess: 'event-logout-success',
-	registerSuccess: 'event-register-success',	
+	registerSuccess: 'event-register-success',
+	basketCheckoutSuccess: 'event-basket-chcout-success',
+	imageSelected: 'event-image-selected'
 });
 
 app.constant('PRODUCTS', {

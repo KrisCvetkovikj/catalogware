@@ -96,18 +96,16 @@ public class ProductController extends BaseController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(consumes = "multipart/form-data")
     @ResponseStatus(HttpStatus.CREATED)
-    public Response store(@RequestParam(required = false) String name,
-                          @RequestParam(required = false) String description,
-                          @RequestParam(required = false) Double price,
-                          MultipartFile image,
+    public Response store(@RequestPart(value = "product") Product product,
+                          @RequestPart(value = "image", required = false) MultipartFile image,
                           @AuthenticationPrincipal AuthUser authUser) {
         logger.info("crating product");
-        Map<String, String> errors = validator.validate(name, description, price, image);
-        if (errors.size() > 0) {
-            logger.info("request data to create the product is invalid");
-            throw new BadRequestException(errors);
-        }
-        service.store(name, description, price, image, authUser);
+//        Map<String, String> errors = validator.validate(name, description, price, image);
+//        if (errors.size() > 0) {
+//            logger.info("request data to create the product is invalid");
+//            throw new BadRequestException(errors);
+//        }
+//        service.store(name, description, price, image, authUser);
         return new Response(201, "Product created", "The product was created successfully");
     }
 

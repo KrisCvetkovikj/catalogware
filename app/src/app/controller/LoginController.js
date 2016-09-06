@@ -5,10 +5,12 @@ function LoginController($rootScope, toastr, ErrorUtils, AuthService, LoginDialo
 
 	var _this = this;
 	this.sending = false;
+	this.errors = [];
 
 	this.login = function() {
 		if (!this.sending) {
-			this.sending = true;			
+			this.sending = true;
+			this.errors = [];
 			AuthService.login(this.credentials).then(loginSuccessCallback, loginFailedCallback);
 		}
 	}

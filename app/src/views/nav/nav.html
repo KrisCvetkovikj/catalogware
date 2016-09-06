@@ -3,30 +3,37 @@
 		<div class='navbar-header'>
 			<a ui-sref="root.home" class='navbar-brand'>Catelogware</a>
 		</div>		
-
+		<ul class='nav navbar-nav' ng-if="navCtrl.isAuthenticated() && !navCtrl.isAdmin()">
+			<li>
+				<a ui-sref="root.user-basket">
+					<i class='fa fa-shopping-basket'></i>
+					Basket
+				</a>
+			</li>
+		</ul>
 		<ul class='nav navbar-nav navbar-right'>
-			<li ng-if="navCtrl.user.isAdmin()">
-				<a>
+			<li ng-if="navCtrl.isAuthenticated() && navCtrl.isAdmin()">
+				<a ng-click="navCtrl.showCreateProductDialog()">
 					<i class='fa fa-plus-circle'></i>
 					Add a new product
 				</a>
-			</li>
-			<li ng-if="navCtrl.user.isAdmin()">
-				<a>
-					<i class='fa fa-dashboard'></i>
-					Dashboard
-				</a>
-			</li>
-			<li ng-if="navCtrl.user.isAuthenticated" class='dropdown'>
+			</li>			
+			<li ng-if="navCtrl.isAuthenticated()" class='dropdown'>
 				<a class='dropdown-toggle' data-toggle='dropdown'>
 					<i class='fa fa-user'></i>
 					{{ navCtrl.user.name }}
 					<span class='caret'></span>
 				</a>
-				<ul class="dropdown-menu">                        
-					<li ng-if="!navCtrl.user.isAdmin()">
-						<a>
-							<i class='fa fa-user'></i>
+				<ul class="dropdown-menu">					
+					<li ng-if="!navCtrl.isAdmin()">
+						<a ui-sref="root.user-likes">
+							<i class='fa fa-thumbs-o-up'></i>
+							Likes
+						</a>
+					</li>
+					<li ng-if="!navCtrl.isAdmin()">
+						<a ui-sref="root.user-orders">
+							<i class='fa fa-shopping-cart'></i>
 							Orders
 						</a>
 					</li>
@@ -38,13 +45,13 @@
 					</li>
 				</ul>
 			</li>						
-			<li ng-if="!navCtrl.user.isAuthenticated">
+			<li ng-if="!navCtrl.isAuthenticated()">
 				<a ng-click="navCtrl.showLoginDialog()">
 					<i class='fa fa-sign-in'></i>
 					Login
 				</a>
 			</li>
-			<li ng-if="!navCtrl.user.isAuthenticated">
+			<li ng-if="!navCtrl.isAuthenticated()">
 				<a ng-click="navCtrl.showRegisterDialog()">
 					<i class='fa fa-user'></i>
 					Register

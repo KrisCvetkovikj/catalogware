@@ -251,8 +251,6 @@ td[st-sort] {
 	margin-left: 5px;
 }
 
-
-
 .book-btn-group {
 	margin-top: 20px;
 }
@@ -296,17 +294,19 @@ i[star] {
 	margin-right: 15px;
 }
 
-
-
-
-.user-books-content {
-	margin-top: 30px;
+.row.separator {
+    border-bottom: 2px solid #e6e6e6;
+    padding-bottom: 20px;
 }
 
-.dashboard .book-info-panel {
-	margin-top: 20px;
+.align-center {
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
 }
 
-.about {
-	margin-top: 30px;
+.product-row {
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
 }

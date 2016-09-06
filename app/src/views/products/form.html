@@ -1,0 +1,146 @@
+<list-errors errors="productCtrl.errors"></list-errors>
+
+<form name='productCtrl.form' novalidate class='form-horizontal'
+	ng-submit="productCtrl.send()">
+	
+	<!-- Name -->
+	<div class='form-group has-feedback' 
+		ng-class="{'has-error': productCtrl.nameError(),'has-success': productCtrl.nameOk()}">
+
+		<label for="name" class='control-label col-sm-2'>Name: </label>
+		<div class='col-sm-10'>
+			<input type="text" class='form-control' id="name" name="name"
+				ng-model="productCtrl.product.name" required ng-model-options="{updateOn: 'blur'}" />
+			<!-- Icons -->
+			<i class='fa fa-remove form-control-feedback' ng-if="productCtrl.nameError()"></i>
+			<i class='fa fa-check form-control-feedback' ng-if="productCtrl.nameOk()"></i>
+		</div>
+		<!-- Errors -->
+		<div class='col-sm-10 col-sm-offset-2' ng-if="productCtrl.nameError()"
+			ng-messages="productCtrl.form.name.$error">
+			<strong class='text-danger' ng-message="required">
+				The name field is required
+			</strong>
+		</div>
+	</div>
+
+	<!-- Description -->
+	<div class='form-group has-feedback' 
+		ng-class="{'has-error': productCtrl.descriptionError(),'has-success': productCtrl.descriptionOk()}">
+		<label for="description" class='control-label col-sm-2'>Description: </label>
+		<div class='col-sm-10'>
+			<textarea rows="7" class='form-control' id="description" name="description"
+				ng-model="productCtrl.product.description" required ng-model-options="{updateOn: 'blur'}">
+			</textarea>			
+			<!-- Icons -->
+			<i class='fa fa-remove form-control-feedback' ng-if="productCtrl.descriptionError()"></i>
+			<i class='fa fa-check form-control-feedback' ng-if="productCtrl.descriptionOk()"></i>
+		</div>
+		<!-- Errors -->
+		<div class='col-sm-10 col-sm-offset-2' ng-if="productCtrl.descriptionError()"
+			ng-messages="productCtrl.form.description.$error">
+			<strong class='text-danger' ng-message="required">
+				The description field is required
+			</strong>
+		</div>
+	</div>
+
+	<!-- Categories -->
+	<div class='form-group has-feedback' 
+		ng-class="{'has-error': productCtrl.categoriesError(),'has-success': productCtrl.categoriesOk() }">
+		<label for="categories" class='control-label col-sm-2'>Categories: </label>
+		<div class='col-sm-10'>
+			<ui-select name="categories" class='form-control' id="categories" 
+				multiple ui-select-required ng-model="productCtrl.product.categories">
+				<ui-select-match placeholder="Select Categories">
+					<span>{{$item.name}}</span>
+				</ui-select-match>
+				<ui-select-choices	
+					repeat="item in (productCtrl.categories | filter: $select.search) track by item.id">
+					<span>{{item.name}}</span>
+				</ui-select-choices>
+			</ui-select>
+			<!-- Icons -->
+			<i class='fa fa-remove form-control-feedback' ng-if="productCtrl.categoriesError()"></i>
+			<i class='fa fa-check form-control-feedback' ng-if="productCtrl.categoriesOk()"></i>
+		</div>
+		<!-- Errors -->
+		<div class='col-sm-10 col-sm-offset-2' ng-if="productCtrl.categoriesError()"
+			ng-messages="productCtrl.form.categories.$error">
+			<strong class='text-danger' ng-message="uiSelectRequired">
+				You must add at least one category
+			</strong>
+		</div>
+	</div>
+
+	<!-- Image -->	
+	<!-- ng-if="! productCtrl.book.image_path" TODO -->
+	<div class='form-group has-feedback'
+		ng-class="{'has-error': productCtrl.imageError(),'has-success': productCtrl.imageOk() }">
+		<label for="image" class='control-label col-sm-2'>Image: </label>		
+		<div class='col-sm-10'>
+			<input type="file" class='form-control' id="image" name="image"
+				ng-model="productCtrl.image" accept="image/png,image/jpeg" required valid-file />
+			<!-- Icons -->
+			<i class='fa fa-remove form-control-feedback' ng-if="productCtrl.imageError()"></i>
+			<i class='fa fa-check form-control-feedback' ng-if="productCtrl.imageOk()"></i>
+		</div>		
+		<!-- Errors -->
+		<div class='col-sm-10 col-sm-offset-2' ng-if="productCtrl.imageError()"
+			ng-messages="productCtrl.form.image.$error">
+			<strong class='text-danger' ng-message="required">
+				You must add a image
+			</strong>			
+		</div>		
+	</div>
+
+	<!-- <div class='form-group' ng-if="productCtrl.book.image_path">
+		<label for="image" class='control-label col-sm-2'>Image: </label>
+		<div>
+			<div class='col-sm-2 col-xs-6'>
+				<img class='img-responsive' ng-src="/{{productCtrl.book.image_path}}" />
+			</div>
+			<div class='col-xs-1'>
+				<button type='button' class='btn btn-danger' title="Remove" tooltip 
+					ng-click="productCtrl.deleteImage()">
+					<i class='fa fa-remove'></i>
+				</button>
+			</div>		
+		</div>			
+	</div> -->
+
+	<!-- Price -->
+	<div class='form-group has-feedback' 
+		ng-class="{'has-error': productCtrl.priceError(),'has-success': productCtrl.priceOk() }">
+		<label for="price" class='control-label col-sm-2'>Price: </label>
+		<div class='col-sm-10'>
+			<input type="number" step="0.01" class='form-control' id="price" name="price"
+				ng-model="productCtrl.product.price" required min="0" ng-min="0"
+				ng-model-options="{updateOn: 'blur'}" />
+			<!-- Icons -->
+			<i class='fa fa-remove form-control-feedback' ng-if="productCtrl.priceError()"></i>
+			<i class='fa fa-check form-control-feedback' ng-if="productCtrl.priceOk()"></i>
+		</div>
+		<!-- Errors -->
+		<div class='col-sm-10 col-sm-offset-2' ng-if="productCtrl.priceError()"
+			ng-messages="productCtrl.form.price.$error">
+			<strong class='text-danger' ng-message="required">
+				The price field is required
+			</strong>
+			<strong class='text-danger' ng-message="min">
+				The price can't be negative
+			</strong>
+		</div>
+	</div>
+
+	<!-- Buttons -->
+	<div class='row'>
+		<div class='col-sm-4 col-sm-offset-2 col-xs-8'>
+			<button class='btn btn-primary btn-block'>
+				<i class='fa fa-paper-plane'></i>				
+				{{productCtrl.btnText}}
+			</button>
+		</div>
+		<i class='fa fa-spinner fa-spin fa-2x' no-animate ng-if="productCtrl.sending"></i>
+	</div>
+</form>

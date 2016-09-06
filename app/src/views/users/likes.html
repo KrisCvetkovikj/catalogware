@@ -1,0 +1,44 @@
+<table class='table table-striped' st-table="likes" st-safe-src="userCtrl.likes">
+	<thead>
+		<tr>
+			<td st-sort="pk.product.name">
+				<b>Product name</b>
+			</td>
+			<td st-sort="pk.product.price">
+				<b>Book price</b>
+			</td>
+			<td st-sort="rating">
+				<b>Your rating</b>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type='text' class='form-control' st-search='name' placeholder="Search by name..." />
+			</td>
+			<td></td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="like in likes">
+			<td>
+				<a ui-sref="root.product-details({id: like.pk.product.id})">
+					{{ like.pk.product.name }}
+				</a>
+			</td>
+			<td>
+				{{ like.pk.product.price | currency }}
+			</td>
+			<td>
+				{{ like.rating }}
+			</td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="3" class="text-center">
+				<div st-pagination st-items-by-page="10"></div>
+			</td>
+		</tr>
+	</tfoot>
+</table>
