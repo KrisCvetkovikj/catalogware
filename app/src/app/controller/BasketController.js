@@ -4,19 +4,26 @@ controller.controller('BasketController', BasketController);
 function BasketController($scope, $state, basket, Product, Basket, AddressDialog, toastr, EVENTS) {
 
 	var _this = this;
-	this.basket = basket;
+	this.basket = null;
 	var selectedProduct = null;
 
+	basket.$promise.then(function() {
+		_this.basket = basket;
+	});
+
 	this.isEmpty = function() {
-		return this.basket.products.length == 0;
+		return this.basket && this.basket.products.length == 0;
 	}
 
 	this.total = function() {
-		var sum = 0;
-		basket.products.forEach(function(product) {
-			sum += product.price;
-		});
-		return sum;
+		if (this.basket) {
+			var sum = 0;
+			basket.products.forEach(function(product) {
+				sum += product.price;
+			});
+			return sum;
+		}
+		return 0;
 	}
 
 	this.removeProduct = function(product) {

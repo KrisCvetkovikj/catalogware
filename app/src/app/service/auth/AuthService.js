@@ -5,7 +5,7 @@ function AuthService($rootScope, $q, $http, $auth, AuthUser, EVENTS) {
 	var _this = this;
 
 	this.login = function(credentials) {
-		return $auth.login(credentials)
+		return $auth.login(credentials, {ignore: 401})
 			.then(function(response) {
 				var data = response.data;
 				AuthUser.create(data.name, data.role);

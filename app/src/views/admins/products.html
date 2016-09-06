@@ -1,0 +1,78 @@
+<table class='table table-striped table-hover' st-table="products" st-safe-src="adminCtrl.products">
+	<thead>
+		<tr>
+			<td st-sort="id">
+				<b>Product ID</b>
+			</td>
+			<td st-sort="name">
+				<b>Product Name</b>
+			</td>
+			<td st-sort="createdAt">
+				<b>Created At</b>
+			</td>
+			<td st-sort="updatedAt">
+				<b>Updated At</b>
+			</td>
+			<td>
+				<b>Categories</b>
+			</td>
+			<td st-sort="price">
+				<b>Price</b>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<input type='text' class='form-control' st-search='id' placeholder="ID..." />
+			</td>
+			<td>
+				<input type='text' class='form-control' st-search='name' placeholder="Name..." />
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="product in products" class='animate'>
+			<td>
+				{{ product.id }}
+			</td>
+			<td>
+				{{ product.name }}
+			</td>
+			<td>
+				<span am-time-ago="product.createdAt"></span>
+			</td>
+			<td>
+				<span am-time-ago="product.updatedAt"></span>
+			</td>
+			<td>
+				<span class='label label-primary category' 
+					ng-repeat="category in product.categories">
+					{{ category.name }}
+				</span>
+			</td>
+			<td>{{ product.price | currency }}</td>
+			<td>
+				<button class='btn btn-primary btn-sm' tooltip title="Edit Product"
+					ng-click="adminCtrl.showUpdateProductDialog(product)">
+					<i class='fa fa-pencil-square-o'></i>
+				</button>
+				<button class='btn btn-danger btn-sm' tooltip title="Remove Product"
+					ng-click="adminCtrl.removeProduct(product)">
+					<i class='fa fa-trash'></i>
+				</button>
+			</td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="7" class="text-center">
+				<div st-pagination st-items-by-page="10"></div>
+			</td>
+		</tr>
+	</tfoot>
+</table>

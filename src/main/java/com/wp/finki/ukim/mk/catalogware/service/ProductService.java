@@ -26,11 +26,11 @@ public interface ProductService {
 
     Product store(Product product);
 
-    Product store(String name, String description, double price, MultipartFile image, AuthUser authUser);
+    Product store(Product product, MultipartFile image, AuthUser authUser);
 
     Product update(long id, Product product);
 
-    Product update(long id, String name, String description, double price, MultipartFile image);
+    Product update(long id, Product product, MultipartFile image);
 
     void delete(long id);
 

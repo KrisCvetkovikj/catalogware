@@ -1,7 +1,7 @@
 
 app.service('AuthResolver', AuthResolver);
 
-function AuthResolver($rootScope, $q, EVENTS) {
+function AuthResolver($rootScope, $q, AuthUser, EVENTS) {
 
 	var checked = false;
 
@@ -16,5 +16,5 @@ function AuthResolver($rootScope, $q, EVENTS) {
 			unwatch();
 		});
 		return deferred.promise;
-	}
+	}	
 }

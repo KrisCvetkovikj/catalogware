@@ -104,15 +104,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product store(String name, String description, double price, MultipartFile image, AuthUser authUser) {
+    public Product store(Product product, MultipartFile image, AuthUser authUser) {
+        if (product == null) {
+            throw new IllegalArgumentException("product can't be null");
+        }
         if (image == null) {
             throw new IllegalArgumentException("image can't be null");
         }
         byte[] imageBytes = null;
         try {
             imageBytes = image.getBytes();
-            User admin = authUser.getUser();
-            return this.store(new Product(name, description, price, imageBytes, null, null, admin));
+            product.setImage(imageBytes);
+            product.setAdmin(authUser.getUser());
+            return this.store(product);
         } catch (IOException e) {
             e.printStackTrace();
             throw new ProductChangeFailedException("Error occurred while saving the product");
@@ -136,33 +140,36 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product update(long id, String name, String description, double price, MultipartFile image) {
-        if (name == null) {
-            throw new IllegalArgumentException("name can't be null");
-        }
-        if (description == null) {
-            throw new IllegalArgumentException("description can't be null");
-        }
-        if (image == null) {
-            throw new IllegalArgumentException("image can't be null");
-        }
-        Product product = this.get(id);
+    public Product update(long id, Product product, MultipartFile image) {
         if (product == null) {
+            throw new IllegalArgumentException("product can't be null");
+        }
+        if (product.getName() == null) {
+            throw new IllegalArgumentException("product name can't be null");
+        }
+        if (product.getDescription() == null) {
+            throw new IllegalArgumentException("product description can't be null");
+        }
+        Product dbProduct = this.get(id);
+        if (dbProduct == null) {
             throw new ProductNotFoundException(String
                     .format("can't update product, product with id %d don't exists", id));
         }
-        product.setName(name);
-        product.setDescription(description);
-        product.setPrice(price);
-        product.setUpdatedAt(new Date());
-        try {
-            product.setImage(image.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ProductChangeFailedException("Error occurred while updating the product");
+        dbProduct.setName(product.getName());
+        dbProduct.setDescription(product.getDescription());
+        dbProduct.setPrice(product.getPrice());
+        dbProduct.setCategories(product.getCategories());
+        dbProduct.setUpdatedAt(new Date());
+        if (image != null) {
+            try {
+                dbProduct.setImage(image.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new ProductChangeFailedException("Error occurred while updating the product");
+            }
         }
         try {
-            return repository.save(product);
+            return repository.save(dbProduct);
         } catch (Exception exp) {
             exp.printStackTrace();
             throw new ProductChangeFailedException("Error occurred while updating the product");

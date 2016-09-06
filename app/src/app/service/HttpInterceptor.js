@@ -21,9 +21,7 @@ function HttpInterceptor($rootScope, $q, EVENTS) {
 
 	return {
 		responseError: function(response) {			
-			console.log("check ignore");
-			if(!shouldIgnore(response.status, response.config.ignore)) {
-				console.log("should ignore");
+			if(!shouldIgnore(response.status, response.config.ignore)) {				
 				$rootScope.$broadcast({
 					404: EVENTS.notFound,
 					403: EVENTS.notAuthorized,

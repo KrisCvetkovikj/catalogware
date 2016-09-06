@@ -37,7 +37,6 @@ public class Product extends BaseModel implements Serializable {
     @NotNull(message = "The product image is required")
     private byte[] image;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 

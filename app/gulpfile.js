@@ -74,6 +74,10 @@ var FONTS_LIB = [
 	'src/libs/font-awesome/fonts/*.{ttf,woff,eot,svg,woff2}',
 ];
 
+var IMG_PATHS = [
+	'src/img/**/*.{png,jpg}'
+];
+
 //The html files used for revision.
 var INDEX_FILE = 'index.html';
 
@@ -87,6 +91,8 @@ var CSS_DESTINATION = 'dest/css/';
 
 //The location where the font files will be saved.
 var FONTS_DESTINATION = 'dest/fonts/';
+
+var IMG_DESTINATION = 'dest/img/';
 
 //Reverse Proxy route
 var API_URL = "http://localhost:8080/api";
@@ -136,6 +142,11 @@ gulp.task('copy_fonts', function() {
 	        .pipe(gulp.dest(FONTS_DESTINATION));	
 });
 
+gulp.task('copy_img', function() {
+	return gulp.src(IMG_PATHS)
+	        .pipe(gulp.dest(IMG_DESTINATION));	
+});
+
 //Task for adding revesion on html files to prevent caching the resources.
 gulp.task('cache-break', function() {
 	return gulp.src(INDEX_FILE)
@@ -150,6 +161,7 @@ var tasks = [
 	'concat_app_js',
 	'concat_custom_css',
 	'copy_fonts',
+	'copy_img',
 	'cache-break'
 ];
 

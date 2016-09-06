@@ -96,16 +96,15 @@ public class ProductController extends BaseController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(consumes = "multipart/form-data")
     @ResponseStatus(HttpStatus.CREATED)
-    public Response store(@RequestPart(value = "product") Product product,
-                          @RequestPart(value = "image", required = false) MultipartFile image,
+    public Response store(@RequestPart Product product,
+                          @RequestPart(required = false) MultipartFile image,
                           @AuthenticationPrincipal AuthUser authUser) {
-        logger.info("crating product");
-//        Map<String, String> errors = validator.validate(name, description, price, image);
-//        if (errors.size() > 0) {
-//            logger.info("request data to create the product is invalid");
-//            throw new BadRequestException(errors);
-//        }
-//        service.store(name, description, price, image, authUser);
+        Map<String, String> errors = validator.validate(product, image);
+        if (errors.size() > 0) {
+            logger.info("request data to create the product is invalid");
+            throw new BadRequestException(errors);
+        }
+        service.store(product, image, authUser);
         return new Response(201, "Product created", "The product was created successfully");
     }
 
@@ -113,24 +112,26 @@ public class ProductController extends BaseController {
      * Its post and not put because put only accepts single resource, so we can't send image over put.
      *
      * @param id product id
-     * @param name new product name
-     * @param description new product description
-     * @param price new product price
+     * @param product product data
      * @param image new product image
      * @return success response indicating that the product has been saved in the database
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/{id}", consumes = "multipart/form-data")
-    public Response update(@PathVariable long id, @RequestParam(required = false) String name,
-                           @RequestParam(required = false) String description,
-                           @RequestParam(required = false) Double price,
-                           MultipartFile image) {
+    public Response update(@PathVariable long id,
+                           @RequestPart Product product,
+                           @RequestPart(required = false) MultipartFile image) {
         logger.info(String.format("updating product with id %d", id));
-        Map<String, String> errors = validator.validate(name, description, price, image);
+        Map<String, String> errors;
+        if (image == null) {
+            errors = validator.validate(product);
+        } else {
+            errors = validator.validate(product, image);
+        }
         if (errors.size() > 0) {
             throw new BadRequestException(errors);
         }
-        service.update(id, name, description, price, image);
+        service.update(id, product, image);
         return new Response(200, "Product updated", "The product was updated successfully");
     }
 

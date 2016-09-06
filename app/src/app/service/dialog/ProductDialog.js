@@ -32,6 +32,7 @@ function ProductDialog($modal) {
 	}
 
 	this.showUpdateDialog = function(product) {
+		product.image = true;
 		modal = show(product, 'UpdateProductController',
 			'Update product', 'src/views/products/edit.html');
 	}

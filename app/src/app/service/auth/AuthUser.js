@@ -24,6 +24,6 @@ function AuthUser(ROLES) {
 	}
 
 	this.isAdmin = function() {		
-		return this.role == ROLES.admin;
+		return this.isAuthenticated && this.role == ROLES.admin;
 	}
 }

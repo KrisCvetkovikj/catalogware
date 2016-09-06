@@ -73,7 +73,7 @@ app.config([
                         return Product.authUserBasket({id: $stateParams.id});
                     }
                 }
-            })
+            })            
             .state('root.user-likes', {
                 url: 'users/me/likes',
                 views: {
@@ -85,9 +85,17 @@ app.config([
                         controllerAs: 'userCtrl'
                     }
                 },
+                data: {
+                    authenticated: true,
+                },
                 resolve: {
-                    likes: function(User) {
-                        return User.authUserLikes();
+                    likes: function($rootScope, $q, AuthUser, User, EVENTS) {                        
+                        if (AuthUser.isAuthenticated) {                            
+                            return User.authUserLikes();
+                        } else {                            
+                            $rootScope.$broadcast(EVENTS.notAuthorized);                            
+                            return $q.reject("not a autheticated");
+                        }
                     }
                 }
             })
@@ -100,9 +108,17 @@ app.config([
                         controllerAs: 'userCtrl'
                     }
                 },
+                data: {
+                    authenticated: true,
+                },
                 resolve: {
-                    orders: function(User) {
-                        return User.authUserOrders();
+                    orders: function($rootScope, $q, AuthUser, User, EVENTS) {
+                        if (AuthUser.isAuthenticated) {
+                            return User.authUserOrders();
+                        } else {                            
+                            $rootScope.$broadcast(EVENTS.notAuthorized);                            
+                            return $q.reject("not a autheticated");
+                        }
                     }
                 }
             })
@@ -115,204 +131,49 @@ app.config([
                         controllerAs: 'basketCtrl'
                     }
                 },
+                data: {
+                    authenticated: true,
+                },
                 resolve: {
-                    basket: function(Basket) {
-                        return Basket.get();
+                    basket: function($rootScope, $q, AuthUser, Basket, EVENTS) {                        
+                        if (AuthUser.isAuthenticated) {                            
+                            return Basket.get();
+                        } else {                            
+                            $rootScope.$broadcast(EVENTS.notAuthorized);                            
+                            return $q.reject("not autheticated");
+                        } 
                     }
                 }
             })            
-
-
-
-        $stateProvider.state('root.about', {
-            url: 'about',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/about.html"
+            .state('root.products', {
+                url: 'admin/products',
+                data: {
+                    authenticated: true,
+                },
+                views: {
+                    'content@root': {
+                        templateUrl: 'src/views/admins/products.html',
+                        controller: 'AdminController',
+                        controllerAs: 'adminCtrl'
+                    }
+                },
+                resolve: {
+                    products: function($rootScope, $q, AuthUser, Product, EVENTS) {
+                        if (AuthUser.isAdmin()) {
+                            return Product.query();
+                        } else {
+                            $rootScope.$broadcast(EVENTS.notAuthorized);                            
+                            return $q.reject("not a admin");
+                        }
+                    }
                 }
-            }
-        });
-
-        $stateProvider.state('root.book-likes', {
-            url: 'book-likes',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/book-likes.html"
+            })
+            .state('root.error-500', {
+                url: 'errors/505',
+                views: {
+                    "content@root": {
+                        templateUrl: 'src/views/errors/500.html'
+                    }
                 }
-            }
-        });
-
-        $stateProvider.state('root.book-orders', {
-            url: 'book-orders',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/book-orders.html"
-                }
-            }
-        });
-
-
-        $stateProvider.state('root.book-price', {
-            url: 'book-price',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/book-price.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.books', {
-            url: 'books',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/books.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.create', {
-            url: 'create',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/create.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.dashboard', {
-            url: 'dashboard',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/dashboard.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.form', {
-            url: 'form',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/form.html"
-                }
-            }
-        });        
-
-        $stateProvider.state('root.like-stars', {
-            url: 'like-stars',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/like-stars.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.index', {
-            url: 'index',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/index.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.likes', {
-            url: 'likes',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/likes.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.list', {
-            url: 'list',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/list.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.login', {
-            url: 'login',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/login.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.orders', {
-            url: 'orders',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/orders.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.register', {
-            url: 'register',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/register.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.show', {
-            url: 'show',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/show.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.top', {
-            url: 'top',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/top.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.update', {
-            url: 'update',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/update.html"
-                }
-            }
-        });
-
-        $stateProvider.state('root.users', {
-            url: 'users',
-            views: {
-                'main@': {
-                    templateUrl: "src/views/users.html"
-                }
-            }
-        });
-    }])
-    .run([
-        '$rootScope',
-        function($rootScope) {
-
-            $rootScope.menuItems = [{
-                state: 'root',
-                icon: 'fa-home',
-                name: 'wp.home'
-
-            }, {
-                state: 'root.students',
-                icon: 'fa-users',
-                name: 'wp.students'
-            }, {
-                state: 'root.courses',
-                icon: 'fa-users',
-                name: 'wp.courses'
-            }];
-
-        }]);
+            });
+}])

@@ -10,35 +10,13 @@ function CreateProductController($scope, product, categories, Product, ErrorUtil
 	this.errors = [];
 	this.image = null;
 
-	this.store = function() {		
-		_this.product = {
-			name: "Test",
-			description: "Anuglar Test",
-			price: 124,
-			categories: [{id: 1, name: "Category 1"}, {id: 2, name: "Category 2"}]
-		};
-		// if (!this.sending) {
-		// 	this.sending = true;
-		// 	this.errors = [];
-		// 	// Product.save(data, storeSuccessCallback, storeFailedCallback);
-			$http({
-			    method: 'POST',
-			    url: 'api/products',
-			    headers: {'Content-Type': undefined },
-			    transformRequest: function (data) {
-			        var formData = new FormData();
-			        formData.append('product', new Blob([angular.toJson(data.product)], {
-			            type: "application/json"
-			        }));
-			        formData.append("image", data.image);
-			        return formData;
-			    },
-			    data: { 
-			    	product: _this.product, 
-			    	file: _this.image
-			    }
-			});
-		// }
+	this.store = function() {			
+		if (!this.sending) {
+			this.sending = true;
+			this.errors = [];
+			Product.save({product: _this.product, image: _this.image}, 
+				storeSuccessCallback, storeFailedCallback);
+		}
 	}
 
 	var storeSuccessCallback = function() {
@@ -47,9 +25,13 @@ function CreateProductController($scope, product, categories, Product, ErrorUtil
 		toastr.success("Product saved successfully", "Product Saved");
 	}
 
-	var storeFailedCallback = function(response) {
-		_this.sending - false;
+	var storeFailedCallback = function(response) {		
+		_this.sending = false;		
 		_this.errors = ErrorUtils.getErrorsFromResponse(response.data);
+		if (_this.errors.length == 0) {
+			toastr.success("Error occurred while trying to update the product. " + 
+			"Please try again later", "Error");
+		}
 	}
 
 	var unwatch = $scope.$on(EVENTS.imageSelected, function(event, data) {		

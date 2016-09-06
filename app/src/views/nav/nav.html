@@ -17,6 +17,12 @@
 					<i class='fa fa-plus-circle'></i>
 					Add a new product
 				</a>
+			</li>
+			<li ng-if="navCtrl.isAuthenticated() && navCtrl.isAdmin()">
+				<a ui-sref="root.products">
+					<i class='fa fa-product-hunt'></i>
+					View Products
+				</a>
 			</li>			
 			<li ng-if="navCtrl.isAuthenticated()" class='dropdown'>
 				<a class='dropdown-toggle' data-toggle='dropdown'>

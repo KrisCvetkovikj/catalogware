@@ -37,9 +37,13 @@ function ProductFormController(ErrorUtils) {
 
 	this.priceError = function() {
 		return this.form && this.form.price && ErrorUtils.fieldError(this.form, this.form.price);
-	};
+	}
 
 	this.priceOk = function() {
 		return this.form && this.form.price && ErrorUtils.fieldOk(this.form, this.form.price);
-	};
+	}
+
+	this.deleteImage = function() {
+		this.product.image = false;
+	}
 }
