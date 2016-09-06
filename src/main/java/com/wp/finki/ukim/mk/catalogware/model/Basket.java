@@ -1,5 +1,6 @@
 package com.wp.finki.ukim.mk.catalogware.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -18,12 +19,12 @@ public class Basket extends BaseModel implements Serializable {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    @JsonIgnore
     @MapsId
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id", referencedColumnName = "id")
     private User user;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "baskets_products",
             joinColumns = @JoinColumn(name = "basket_id"),

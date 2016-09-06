@@ -58,7 +58,7 @@ public class CategoryRepositoryTest {
     }
 
     /**
-     * Test that findAll method will return all saved categories in the database.
+     * Temp that findAll method will return all saved categories in the database.
      */
     @Test
     public void testFindAll() {
@@ -81,7 +81,7 @@ public class CategoryRepositoryTest {
     }
 
     /**
-     * Test that fineOne method will return the category when the id exists.
+     * Temp that fineOne method will return the category when the id exists.
      */
     @Test
     public void testFindOne() {
@@ -90,7 +90,7 @@ public class CategoryRepositoryTest {
     }
 
     /**
-     * Test that findOne will return null when the category id don't exist.
+     * Temp that findOne will return null when the category id don't exist.
      */
     @Test
     public void testFindOneOnUnExistingId() {
@@ -99,7 +99,7 @@ public class CategoryRepositoryTest {
     }
 
     /**
-     * Test that findByName will return the category when the name exists in the database.
+     * Temp that findByName will return the category when the name exists in the database.
      */
     @Test
     public void testFindByName() {
@@ -108,7 +108,7 @@ public class CategoryRepositoryTest {
     }
 
     /**
-     * Test that findByName will return null when the name don't exists.
+     * Temp that findByName will return null when the name don't exists.
      */
     @Test
     public void testFindByNameOnUnExistingName() {
@@ -117,7 +117,7 @@ public class CategoryRepositoryTest {
     }
 
     /**
-     * Test then count will return the number of categories in the database.
+     * Temp then count will return the number of categories in the database.
      */
     @Test
     public void testCount() {
@@ -125,7 +125,7 @@ public class CategoryRepositoryTest {
     }
 
     /**
-     * Test that save method will save a new category when the id don;t exists in the database.
+     * Temp that save method will save a new category when the id don;t exists in the database.
      */
     @Test
     public void testStore() {
@@ -137,7 +137,7 @@ public class CategoryRepositoryTest {
     }
 
     /**
-     * Test that save method will update a existing row int he database when the id exists.
+     * Temp that save method will update a existing row int he database when the id exists.
      */
     @Test
     public void testUpdate() {
@@ -150,7 +150,7 @@ public class CategoryRepositoryTest {
     }
 
     /**
-     * Test that delete will remove a existing row from the database.
+     * Temp that delete will remove a existing row from the database.
      */
     @Test
     public void testDelete() {

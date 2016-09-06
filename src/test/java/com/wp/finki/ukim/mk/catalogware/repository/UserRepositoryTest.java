@@ -59,7 +59,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * Test that findAll will return all saved users in the database.
+     * Temp that findAll will return all saved users in the database.
      */
     @Test
     public void testFindAll() {
@@ -82,7 +82,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * Test that findOne will return the user when the id exists.
+     * Temp that findOne will return the user when the id exists.
      */
     @Test
     public void testFindOne() {
@@ -91,7 +91,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * Test that findOne will return null when the id don't exists.
+     * Temp that findOne will return null when the id don't exists.
      */
     @Test
     public void testFindOneOnUnExistingId() {
@@ -100,7 +100,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * Test that findByName will return the user when the user name exists.
+     * Temp that findByName will return the user when the user name exists.
      */
     @Test
     public void testFindByName() {
@@ -109,7 +109,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * Test that findByName will return null when the user name don't exists.
+     * Temp that findByName will return null when the user name don't exists.
      */
     @Test
     public void testFindByNameOnUnExistingName() {
@@ -118,7 +118,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * Test that findByEmail will return the user when the user email exists.
+     * Temp that findByEmail will return the user when the user email exists.
      */
     @Test
     public void testFindByEmail() {
@@ -127,7 +127,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * Test that findByEmail will return null when the user email don't exists.
+     * Temp that findByEmail will return null when the user email don't exists.
      */
     @Test
     public void testFindByEmailOnUnExistingEmail() {
@@ -136,7 +136,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * Test that count method will return the number of users in the database.
+     * Temp that count method will return the number of users in the database.
      */
     @Test
     public void testCount() {
@@ -144,7 +144,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * Test that save method will store a new user when the uer id don't exists.
+     * Temp that save method will store a new user when the uer id don't exists.
      */
     @Test
     public void testStore() {
@@ -156,7 +156,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * Test that save method will update user data when the user id exists.
+     * Temp that save method will update user data when the user id exists.
      */
     @Test
     public void testUpdate() {
@@ -169,7 +169,7 @@ public class UserRepositoryTest {
     }
 
     /**
-     * Test that delete method will remove a existing user from the database.
+     * Temp that delete method will remove a existing user from the database.
      */
     @Test
     public void testDelete() {

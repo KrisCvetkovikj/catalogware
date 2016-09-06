@@ -5,6 +5,7 @@ import com.wp.finki.ukim.mk.catalogware.CatalogwareApplication;
 import com.wp.finki.ukim.mk.catalogware.model.Category;
 import com.wp.finki.ukim.mk.catalogware.model.Product;
 import com.wp.finki.ukim.mk.catalogware.model.User;
+import com.wp.finki.ukim.mk.catalogware.utils.ProductImageUtils;
 import com.wp.finki.ukim.mk.catalogware.utils.SetUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -14,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -43,8 +47,10 @@ public class ProductRepositoryTest {
     @Autowired
     private ApplicationContext context;
 
-    @Value("${app.test.img}")
-    String testImgPath;
+    @Autowired
+    private ProductImageUtils productImageUtils;
+
+    private Calendar calendar = Calendar.getInstance();
 
     private User admin1 = new User(1, "Admin 1", "admin-1@admin.com", "pass", new Date(), User.Role.ADMIN);
     private User admin2 = new User(2, "Admin 2", "admin-2@admin.com", "pass", new Date(), User.Role.ADMIN);
@@ -55,21 +61,21 @@ public class ProductRepositoryTest {
 
     private final int NUMBER_OF_PRODUCTS = 3;
     private final long product1Id = 1;
-    private Product product1 = new Product(product1Id, "Product 1", "Test product 1", 101.32,
+    private Product product1 = new Product(product1Id, "Product 1", "Temp product 1", 101.32124324,
             null, new Date(), new Date(), admin1);
     private final long product2Id = 2;
-    private Product product2 = new Product(product2Id, "Product 2", "Test product 2", 123,
+    private Product product2 = new Product(product2Id, "Product 2", "Temp product 2", 123,
             null, new Date(), new Date(), admin2);
     private final long product3Id = 3;
-    private Product product3 = new Product(product3Id, "Product 3", "Test product 3", 236.21,
+    private Product product3 = new Product(product3Id, "Product 3", "Temp product 3", 236.21,
             null, new Date(), new Date(), admin1);
     private final long unExistingProductId = 4;
     private Product unExistingProduct = new Product(unExistingProductId, "Un Existing product",
-            "Test un existing product", 125.64, null, new Date(), new Date(), admin2);
+            "Temp un existing product", 125.64, null, new Date(), new Date(), admin2);
 
     @Before
     public void setup() {
-        byte[] image = TestUtils.readFile(this.getClass().getClassLoader(), testImgPath);
+        byte[] image = productImageUtils.getBytes();
         product1.setImage(image);
         product2.setImage(image);
         product3.setImage(image);
@@ -81,12 +87,19 @@ public class ProductRepositoryTest {
         categories1.add(category1);
         categories1.add(category2);
         categories2.add(category2);
-        categories2.addAll(categories3);
+        categories2.add(category3);
         categories3.add(category1);
         categories3.add(category3);
         product1.setCategories(categories1);
         product2.setCategories(categories2);
         product3.setCategories(categories3);
+
+        calendar.add(Calendar.MINUTE, 10);
+        product1.setUpdatedAt(calendar.getTime());
+        calendar.add(Calendar.MINUTE, 10);
+        product2.setUpdatedAt(calendar.getTime());
+        calendar.add(Calendar.MINUTE, 10);
+        product3.setUpdatedAt(calendar.getTime());
 
         userRepository.save(admin1);
         userRepository.save(admin2);
@@ -121,7 +134,7 @@ public class ProductRepositoryTest {
     }
 
     /**
-     * Test that findAll will return all products in the database.
+     * Temp that findAll will return all products in the database.
      */
     @Test
     public void testFindAll() {
@@ -144,7 +157,34 @@ public class ProductRepositoryTest {
     }
 
     /**
-     * Test that findOne will return the product when the id exists in the database.
+     * Temp the behavior when finaAll is called with pageable limit and offset.
+     */
+    @Test
+    public void testFindAllWithPageOffset() {
+        List<Product> products = repository.findAll(new PageRequest(0, 1)).getContent();
+        assertEquals(1, products.size());
+        assertEquals(product1, products.get(0));
+
+        products = repository.findAll(new PageRequest(1, 2)).getContent();
+        assertEquals(1, products.size());
+        assertEquals(product3, products.get(0));
+    }
+
+    /**
+     * Temp that when findAll is called with PageRequest with sort param the products will be ordered by the lates.
+     */
+    @Test
+    public void testFindAllOrderedByLatest() {
+        List<Product> products = repository.findAll(new PageRequest(0, 100,
+                Sort.Direction.DESC, "updatedAt")).getContent();
+        assertEquals(NUMBER_OF_PRODUCTS, products.size());
+        assertEquals(product3, products.get(0));
+        assertEquals(product2, products.get(1));
+        assertEquals(product1, products.get(2));
+    }
+
+    /**
+     * Temp that findOne will return the product when the id exists in the database.
      */
     @Test
     public void testFindOne() {
@@ -153,7 +193,7 @@ public class ProductRepositoryTest {
     }
 
     /**
-     * Test that findOne will return null when the id don't exists in the database.
+     * Temp that findOne will return null when the id don't exists in the database.
      */
     @Test
     public void testFindOneOnUnExistingId() {
@@ -161,7 +201,7 @@ public class ProductRepositoryTest {
     }
 
     /**
-     * Test that count will return the number of products in the database.
+     * Temp that count will return the number of products in the database.
      */
     @Test
     public void testCount() {
@@ -169,7 +209,7 @@ public class ProductRepositoryTest {
     }
 
     /**
-     * Test that store will store the product data in the database.
+     * Temp that store will store the product data in the database.
      */
     @Test
     public void testStore() {
@@ -181,7 +221,7 @@ public class ProductRepositoryTest {
     }
 
     /**
-     * Test that save will update the product data when the product id exists in the database.
+     * Temp that save will update the product data when the product id exists in the database.
      */
     @Test
     public void update() {
@@ -195,12 +235,75 @@ public class ProductRepositoryTest {
     }
 
     /**
-     * Test that delete method will remove the product from the database.
+     * Temp that delete method will remove the product from the database.
      */
     @Test
     public void testDelete() {
         repository.delete(product1Id);
         assertEquals(NUMBER_OF_PRODUCTS - 1, repository.count());
         assertNull(repository.findOne(product1Id));
+    }
+
+    /**
+     * Temp findByCategoriesNameIn will return all products that have the given cateogty name.
+     */
+    @Test
+    public void testFindByCategoriesNameIn() {
+        List<Product> products = repository.findDistinctByCategoriesNameIn(category2.getName());
+        assertEquals(2, products.size());
+        int counter = 0;
+        for (Product product : products) {
+            if (product.getId().equals(product1.getId())) {
+                assertEquals(product1, product);
+                counter++;
+            } else if(product.getId().equals(product2.getId())) {
+                assertEquals(product2, product);
+                counter++;
+            }
+        }
+        assertEquals(2, counter);
+    }
+
+    /**
+     * Temp the behavior when findByCategories called with multiple names.
+     */
+    @Test
+    public void testFindByCategoriesNameInCalledWithMultipleNames() {
+        List<Product> products = repository.findDistinctByCategoriesNameIn(category1.getName(), category2.getName());
+        assertEquals(3, products.size());
+        int counter = 0;
+        for (Product product : products) {
+            if (product.getId().equals(product1.getId())) {
+                assertEquals(product1, product);
+                counter++;
+            } else if(product.getId().equals(product2.getId())) {
+                assertEquals(product2, product);
+                counter++;
+            } else if (product.getId().equals(product3.getId())) {
+                assertEquals(product3, product);
+                counter++;
+            }
+        }
+        assertEquals(3, counter);
+    }
+
+    /**
+     * Temp the behavior when findByCategories is called with category that don't existing in the database.
+     */
+    @Test
+    public void testFindByCategoriesNameCalledWithUnExistingCategoryName() {
+        List<Product> products = repository.findDistinctByCategoriesNameIn(category2.getName(), "Temp");
+        assertEquals(2, products.size());
+        int counter = 0;
+        for (Product product : products) {
+            if (product.getId().equals(product1.getId())) {
+                assertEquals(product1, product);
+                counter++;
+            } else if(product.getId().equals(product2.getId())) {
+                assertEquals(product2, product);
+                counter++;
+            }
+        }
+        assertEquals(2, counter);
     }
 }

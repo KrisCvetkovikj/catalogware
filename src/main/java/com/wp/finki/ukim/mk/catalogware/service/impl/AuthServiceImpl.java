@@ -1,5 +1,6 @@
 package com.wp.finki.ukim.mk.catalogware.service.impl;
 
+import com.wp.finki.ukim.mk.catalogware.exception.NotAuthenticatedException;
 import com.wp.finki.ukim.mk.catalogware.model.User;
 import com.wp.finki.ukim.mk.catalogware.model.security.AuthUser;
 import com.wp.finki.ukim.mk.catalogware.service.AuthService;
@@ -11,10 +12,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.security.Principal;
+
 /**
  * Created by Borce on 26.08.2016.
  */
-@Service
+@Service(value = "authService")
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
@@ -58,5 +62,12 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("error occurred while saving the user");
         }
         return this.login(email, password);
+    }
+
+    public boolean isAuthenticated(AuthUser authUser) {
+        if (authUser == null) {
+            throw new NotAuthenticatedException();
+        }
+        return true;
     }
 }

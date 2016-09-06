@@ -1,5 +1,7 @@
 package com.wp.finki.ukim.mk.catalogware.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -14,7 +16,8 @@ public class ProductLikeId implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Product product;
 
     public ProductLikeId() {

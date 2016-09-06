@@ -1,5 +1,6 @@
 package com.wp.finki.ukim.mk.catalogware.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class User extends BaseModel implements Serializable {
     @Column(name = "email", unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -40,15 +42,15 @@ public class User extends BaseModel implements Serializable {
     private Basket basket;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Order> orders;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "admin")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "admin")
     private Set<Product> products;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user")
     private Set<ProductLike> likes;
 
     public User() {
