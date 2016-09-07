@@ -44,7 +44,7 @@ public class OrderController {
         return order;
     }
 
-    //@PreAuthorize("hasAuthority('ADMIN') or @orderService.canSee(#id, principal.id)")
+    @PreAuthorize("hasAuthority('ADMIN') or @orderService.canSee(#id, principal.id)")
     @GetMapping(value = "/{id}/products")
     public Set<Product> products(@PathVariable long id) {
         Order order = service.get(id);

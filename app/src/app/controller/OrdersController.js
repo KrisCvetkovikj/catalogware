@@ -1,6 +1,6 @@
 controller.controller('OrdersController', OrdersController);
 
-function OrdersController(orders, $http, toastr, Order) {
+function OrdersController(orders, $http, toastr, Order, $modal) {
 
     /*var _this = this;
      _this.orders = orders;
@@ -11,10 +11,10 @@ function OrdersController(orders, $http, toastr, Order) {
     orders.$promise.then(function (data) {
         _this.orders = data;
         _this.orders.forEach(function (order, index) {
-            $http.get('/api/orders/' + order.id + '/products').then(function (products) {
-                _this.orders[index].products = products.data;
-            }, function (err) {
-                console.log("GRESKA:", err);
+            Order.getProducts({id: order.id}, {}, function(response) {
+                _this.orders[index].products = response.data;
+            }, function(response) {
+                console.log("GRESKA:", response);
             });
         });
     }, function (error) {
@@ -23,7 +23,22 @@ function OrdersController(orders, $http, toastr, Order) {
     });
 
     _this.getProductsForOrder = function (order) {
-        return order.products;
+        $modal({
+            animation: 'am-fade-and-scale',
+            title: "Products",
+            contentTemplate: "src/views/orders/products.html",
+            html: true,
+            show: true,
+            controller: function(products) {
+                this.products = products;                
+            },
+            controllerAs: "orderCtrl",
+            resolve: {
+                products: function(){
+                    return order.products;
+                }
+            }
+        });
     };
 
     //TODO implement viewing product for order

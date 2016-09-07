@@ -151,6 +151,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean canSee(long id, long userId) {
         Order order = this.get(id);
-        return order == null || order.getUser() == null || order.getUser().getId().equals(userId);
+        return order != null && order.getUser() != null && order.getUser().getId().equals(userId);
     }
 }

@@ -11,7 +11,7 @@ function Modal($modal) {
 			html: true,
 			show: true,
 			controller: controller,
-			controllerAs: controllerAs
+			controllerAs: controllerAs			
 		});
 	}
 }

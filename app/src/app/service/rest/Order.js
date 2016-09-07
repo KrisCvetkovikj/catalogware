@@ -7,12 +7,9 @@ service.factory('Order', Order);
 
 function Order($resource) {
 
-    return $resource("/api/orders/:id/:path", {id: "@id"}, {
+    return $resource("/api/orders/:id/products", {id: "@id"}, {
         getProducts: {
-            method: "GET",
-            params: {
-                path: "products"
-            },
+            method: "GET",            
             isArray: true
         }
     });
