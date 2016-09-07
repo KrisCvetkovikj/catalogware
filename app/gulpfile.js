@@ -33,7 +33,7 @@ var CSS_LIB = [
 	'src/libs/angular-toastr/dist/angular-toastr.css',
 	'src/libs/angular-motion/dist/angular-motion.css',
 	'src/libs/angular-ui-select/dist/select.css',
-	'src/libs/angular-xeditable/dist/css/xeditable.css'	
+	'src/libs/angular-xeditable/dist/css/xeditable.css'
 ];
 
 //The locations of the libaries js files.

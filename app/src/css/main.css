@@ -310,3 +310,13 @@ i[star] {
     display: flex;
     align-items: center;
 }
+
+.clickable:hover {
+    cursor: pointer;
+    background-color: navajowhite !important;
+}
+
+.clickable {
+    cursor: default;
+    background-color: white !important;
+}

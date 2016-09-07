@@ -13,7 +13,7 @@
     "bower"
   ],
   "author": "Borche Petrovski, Kristijan Cvetkovikj",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "bower": "^1.7.9",
     "connect-history-api-fallback": "^1.2.0",
