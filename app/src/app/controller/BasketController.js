@@ -24,7 +24,7 @@ function BasketController($scope, $state, basket, Product, Basket, AddressDialog
 			return sum;
 		}
 		return 0;
-	}
+	}	
 
 	this.removeProduct = function(product) {
 		selectedProduct = product;

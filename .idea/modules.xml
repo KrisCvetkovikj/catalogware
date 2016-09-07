@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/catalogware.iml" filepath="$PROJECT_DIR$/.idea/modules/catalogware.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/catalogware_main.iml" filepath="$PROJECT_DIR$/.idea/modules/catalogware_main.iml" group="catalogware" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/catalogware_test.iml" filepath="$PROJECT_DIR$/.idea/modules/catalogware_test.iml" group="catalogware" />
     </modules>
   </component>
 </project>

@@ -112,7 +112,7 @@ app.config([
                     authenticated: true,
                 },
                 resolve: {
-                    orders: function($rootScope, $q, AuthUser, User, EVENTS) {
+                    orders: function($rootScope, $q, AuthUser, User, AuthResolver, EVENTS) {                        
                         if (AuthUser.isAuthenticated) {
                             return User.authUserOrders();
                         } else {                            

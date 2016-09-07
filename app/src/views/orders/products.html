@@ -1,0 +1,5 @@
+<h3 ng-repeat="product in productCtrl.products">
+	<a ui-sref="root.product-details({id: product.id})">
+		{{ product.name }}
+	</a>
+</h3>
